@@ -8,8 +8,6 @@ namespace GameTracker
 {
     internal static class AppHostBuilder
     {
-        private static readonly string dbPath = @"Data\games.db";
-
         public static IHost Build()
         {
             return Host.CreateDefaultBuilder()
