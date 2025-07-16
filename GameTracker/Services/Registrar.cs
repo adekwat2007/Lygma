@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using GameTracker.Models;
+using GameTracker.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GameTracker.Services
 {
@@ -6,6 +8,8 @@ namespace GameTracker.Services
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
+            services.AddTransient<IRepository<Game>, GameRepository>();
+
             return services;
         }
     }

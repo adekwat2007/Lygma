@@ -1,8 +1,9 @@
 ﻿using GameTracker.Enums;
+using GameTracker.Models.Interfaces;
 
 namespace GameTracker.Models
 {
-    internal class Game
+    internal class Game : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
