@@ -2,5 +2,6 @@
 {
     internal enum CompletionStatus
     {
+        Completed
     }
 }

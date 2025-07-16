@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using GameTracker.ViewModels;
+using System.Windows;
 
 namespace GameTracker.Views
 {

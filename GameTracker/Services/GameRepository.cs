@@ -10,6 +10,12 @@ namespace GameTracker.Services
         private readonly GameDbContext _context;
         private readonly DbSet<Game> _dbSet;
 
+        public GameRepository(GameDbContext context)
+        {
+            _context = context;
+            _dbSet = _context.Set<Game>();
+        }
+
         public async Task AddAsync(Game entity)
         {
             await _dbSet.AddAsync(entity);
