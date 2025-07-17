@@ -8,6 +8,8 @@ namespace GameTracker.Services.Interfaces
 
         Task DeleteAsync(int id);
 
+        Task DeleteAllAsync();
+
         Task UpdateAsync(T entity);
 
         Task<T?> GetByIdAsync(int id);

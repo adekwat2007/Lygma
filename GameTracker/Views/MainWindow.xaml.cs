@@ -9,5 +9,9 @@ namespace GameTracker.Views
         {
             InitializeComponent();
         }
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

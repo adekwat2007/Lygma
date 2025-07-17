@@ -18,6 +18,28 @@ namespace GameTracker.Views
                 return window;
             });
 
+            services.AddTransient<LibraryPage>(s =>
+            {
+                var model = s.GetRequiredService<LibraryViewModel>();
+                var page = new LibraryPage()
+                {
+                    DataContext = model
+                };
+
+                return page;
+            });
+
+            services.AddTransient<AddGamePage>(s =>
+            {
+                var model = s.GetRequiredService<AddGameViewModel>();
+                var page = new AddGamePage()
+                {
+                    DataContext = model
+                };
+
+                return page;
+            });
+
             return services;
         }
     }

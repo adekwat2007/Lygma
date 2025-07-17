@@ -3,36 +3,160 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="clr-namespace:FontAwesome5;assembly=FontAwesome5.Net"
         xmlns:local="clr-namespace:GameTracker"
         xmlns:vm="clr-namespace:GameTracker.ViewModels"
+        xmlns:xc="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Главное окно"
-        Height="450"
-        Width="800"
-        d:DataContext="{d:DesignInstance vm:MainWindowViewModel, IsDesignTimeCreatable=True}">
-    <DockPanel>
-        <Grid DockPanel.Dock="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="Load" Command="{Binding LoadGamesCommand}" />
-            <Button Grid.Column="1" Content="Add 5 games" Command="{Binding AddGamesCommand}" />
+        Title="{Binding CurrentPage}"
+        Height="700"
+        Width="1100"
+        d:DataContext="{d:DesignInstance vm:MainWindowViewModel, IsDesignTimeCreatable=True}"
+        SnapsToDevicePixels="True"
+        UseLayoutRounding="True"
+        FontFamily="/Fonts/#Poppins"
+        WindowStyle="None">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="32"></WindowChrome>
+    </WindowChrome.WindowChrome>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="200" MaxWidth="450" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--Titlebar-->
+        <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0"
+                     Background="#151515">
+            <TextBlock Text="Hydra" VerticalAlignment="Center" Margin="12,0"
+                       Foreground="#6b6b74" DockPanel.Dock="Left" FontWeight="DemiBold"
+                       FontSize="16" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
+                <StackPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="BorderThickness" Value="0" />
+                    </Style>
+                </StackPanel.Resources>
+                <Button Content="─" Width="40" FontSize="14" FontWeight="Light" />
+                <Button Content="◻" Width="40" FontSize="16" FontWeight="Light" />
+                <Button Content="X" Width="40" FontSize="14" FontWeight="Light" />
+            </StackPanel>
         </Grid>
-        <DataGrid ItemsSource="{Binding Games}" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
-                <DataGridTextColumn Header="Название" Binding="{Binding Name}" />
-                <DataGridTemplateColumn Header="Действия">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="X" Background="Red"
-                                    Command="{Binding DataContext.DeleteGameCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                    CommandParameter="{Binding}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-    </DockPanel>
+
+        <!--Separator-->
+        <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" BorderThickness="0,0,0, 1" BorderBrush="#383838" />
+
+        <!--Side menu-->
+        <StackPanel Grid.Column="0"  Grid.Row="2" Orientation="Vertical" Background="#151515">
+            <StackPanel.Resources>
+                <Style TargetType="RadioButton">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#434242"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" Value="#383838"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Padding" Value="4" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                    <Setter Property="FontWeight" Value="Normal" />
+                    <Setter Property="FontSize" Value="16" />
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Height" Value="35"/>
+                    <Setter Property="Margin" Value="15, 4"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="RadioButton">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="4"
+                                        Padding="10, 0">
+                                    <ContentPresenter />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#383838" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Resources>
+            <RadioButton Height="45" Margin="15, 40">
+                <RadioButton.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Border BorderThickness="1" BorderBrush="#3e3e3e" Width="35" Height="35"
+                                CornerRadius="4"
+                                Background="#1c1c1c">
+                            <fa:ImageAwesome Icon="Regular_User" Foreground="#c0c1c7" Width="22" />
+                        </Border>
+                        <TextBlock Text="Sign in" VerticalAlignment="Center" FontWeight="Medium" Foreground="#c0c1c7"  Margin="12, 0, 0, 0" />
+                    </StackPanel>
+                </RadioButton.Content>
+            </RadioButton>
+            <RadioButton >
+                <RadioButton.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Icon="Solid_Home" Width="20" Foreground="#c0c1c7" />
+                        <TextBlock Text="Home" VerticalAlignment="Center" Foreground="#c0c1c7" Margin="12, 0, 0, 0" />
+                    </StackPanel>
+                </RadioButton.Content>
+            </RadioButton>
+            <RadioButton >
+                <RadioButton.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Icon="Solid_Gamepad" Width="20" Foreground="#c0c1c7" />
+                        <TextBlock Text="Catalogue" VerticalAlignment="Center" Foreground="#c0c1c7" Margin="12, 0, 0, 0" />
+                    </StackPanel>
+                </RadioButton.Content>
+            </RadioButton>
+            <RadioButton>
+                <RadioButton.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Icon="Solid_Download" Width="18" Foreground="#c0c1c7" />
+                        <TextBlock Text="Downloads" VerticalAlignment="Center" Foreground="#c0c1c7"  Margin="14, 0, 0, 0" />
+                    </StackPanel>
+                </RadioButton.Content>
+            </RadioButton>
+            <RadioButton >
+                <RadioButton.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Icon="Solid_Cog" Width="18" Foreground="#c0c1c7" />
+                        <TextBlock Text="Settings" VerticalAlignment="Center" Foreground="#c0c1c7"  Margin="14, 0, 0, 0" />
+                    </StackPanel>
+                </RadioButton.Content>
+            </RadioButton>
+
+            <TextBlock Text="MY LIBRARY" FontSize="14" FontWeight="DemiBold" Foreground="#c0c1c7" Margin="15, 30" />
+
+            <Border BorderBrush="#8e8e8e" BorderThickness="1" CornerRadius="3" Margin="15, 0" Background="#1c1c1c" Height="38">
+                <xc:WatermarkTextBox Background="#1c1c1c" Height="34" BorderThickness="0"
+                                     Watermark="Filter library" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                                     FontSize="14" Padding="10,0,0,0" />
+            </Border>
+        </StackPanel>
+
+        <!--Vertical splitter-->
+        <GridSplitter Grid.Column="1"  Grid.Row="2" Width="2" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="#383838" />
+
+        <!--Main part-->
+        <Grid Grid.Column="2"  Grid.Row="2">
+            <Canvas Background="#131625"></Canvas>
+            <Button Content="menu" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10, 5, 5, 5" Height="30" Width="30" />
+            <ContentControl Content="{Binding CurrentPage}" Margin="10, 40, 10 ,10" />
+        </Grid>
+    </Grid>
 </Window>

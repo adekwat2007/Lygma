@@ -1,4 +1,5 @@
 ﻿using GameTracker.Contexts;
+using GameTracker.Factories;
 using GameTracker.Services;
 using GameTracker.ViewModels;
 using GameTracker.Views;
@@ -16,7 +17,8 @@ namespace GameTracker
                     services.RegisterServices()
                         .RegisterViewModels()
                         .RegisterViews()
-                        .RegisterDbContexts();
+                        .RegisterDbContexts()
+                        .RegisterFactories();
                 })
                 .Build();
         }

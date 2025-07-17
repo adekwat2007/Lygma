@@ -22,6 +22,13 @@ namespace GameTracker.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteAllAsync()
+        {
+            var allGames = await GetAllAsync();
+            _dbSet.RemoveRange(allGames);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task DeleteAsync(int id)
         {
             var entity = await GetByIdAsync(id);
