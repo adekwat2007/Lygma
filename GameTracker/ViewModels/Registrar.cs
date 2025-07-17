@@ -6,6 +6,8 @@ namespace GameTracker.ViewModels
     {
         public static IServiceCollection RegisterViewModels(this IServiceCollection services)
         {
+            services.AddTransient<LibraryViewModel>();
+            services.AddTransient<AddGameViewModel>();
             services.AddTransient<MainWindowViewModel>();
 
             return services;

@@ -6,7 +6,7 @@ namespace GameTracker.Contexts
 {
     internal static class Registrar
     {
-        private static readonly string dbPath = @"Data\games.db";
+        private static readonly string dbPath = @"C:\Users\user\source\repos\GameTracker\GameTracker\bin\Debug\net9.0-windows\Data\games.db";
 
         public static IServiceCollection RegisterDbContexts(this IServiceCollection services)
         {
@@ -19,7 +19,7 @@ namespace GameTracker.Contexts
 
     internal class GameDbContextFactory : IDesignTimeDbContextFactory<GameDbContext>
     {
-        private static readonly string dbPath = @"Data\games.db";
+        private static readonly string dbPath = @"C:\Users\user\source\repos\GameTracker\GameTracker\bin\Debug\net9.0-windows\Data\games.db";
 
         public GameDbContext CreateDbContext(string[] args)
         {
