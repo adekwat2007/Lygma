@@ -1,7 +1,10 @@
-﻿namespace GameTracker.Factories
+﻿using GameTracker.Enums;
+using GameTracker.ViewModels.Interfaces;
+
+namespace GameTracker.Factories.Interfaces
 {
     internal interface IViewModelFactory
     {
-        object CreateViewModel();
+        IViewModel CreateViewModel(ViewType viewType);
     }
 }

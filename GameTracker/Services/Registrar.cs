@@ -1,6 +1,4 @@
-﻿using GameTracker.Models;
-using GameTracker.Services.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace GameTracker.Services
 {
@@ -8,7 +6,7 @@ namespace GameTracker.Services
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
-            services.AddTransient<IRepository<Game>, GameRepository>();
+            services.AddHttpClient<RawgApiService>();
 
             return services;
         }

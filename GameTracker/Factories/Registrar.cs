@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using GameTracker.Factories.Interfaces;
+using GameTracker.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GameTracker.Factories
 {
@@ -6,8 +8,7 @@ namespace GameTracker.Factories
     {
         public static IServiceCollection RegisterFactories(this IServiceCollection services)
         {
-            services.AddSingleton<LibraryViewModelFactory>();
-            services.AddSingleton<AddGameViewModelFactory>();
+            services.AddSingleton<IViewModelFactory, ViewModelFactory>();
 
             return services;
         }

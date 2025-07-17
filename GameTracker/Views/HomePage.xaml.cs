@@ -4,9 +4,9 @@ using GameTracker.ViewModels;
 
 namespace GameTracker.Views
 {
-    public partial class LibraryPage : UserControl
+    public partial class HomePage : UserControl
     {
-        public LibraryPage()
+        public HomePage()
         {
             InitializeComponent();
         }

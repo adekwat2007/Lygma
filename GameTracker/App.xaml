@@ -5,11 +5,11 @@
              xmlns:vm="clr-namespace:GameTracker.ViewModels"
              xmlns:v="clr-namespace:GameTracker.Views">
     <Application.Resources>
-        <DataTemplate DataType="{x:Type vm:LibraryViewModel}">
-            <v:LibraryPage />
+        <DataTemplate DataType="{x:Type vm:HomeViewModel}">
+            <v:HomePage />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:AddGameViewModel}">
-            <v:AddGamePage />
+        <DataTemplate DataType="{x:Type vm:CatalogueViewModel}">
+            <v:CataloguePage />
         </DataTemplate>
 
     </Application.Resources>

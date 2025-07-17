@@ -18,9 +18,9 @@ namespace GameTracker.Views
     /// <summary>
     /// Interaction logic for AddGamePAge.xaml
     /// </summary>
-    public partial class AddGamePage : UserControl
+    public partial class CataloguePage : UserControl
     {
-        public AddGamePage()
+        public CataloguePage()
         {
             InitializeComponent();
         }

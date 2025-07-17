@@ -1,17 +1,21 @@
 ﻿using GameTracker.Enums;
 using GameTracker.Models.Interfaces;
+using Newtonsoft.Json;
 
 namespace GameTracker.Models
 {
-    internal class Game : IEntity
+    internal class Game
     {
-        public int Id { get; set; }
+        [JsonProperty("name")]
         public string Name { get; set; }
-        public DateOnly ReleaseDate { get; set; }
-        public IEnumerable<Genre> Genres { get; set; }
-        public IEnumerable<Platform> Platforms { get; set; }
-        public CompletionStatus CompletionStatus { get; set; }
-        public int PersonalRating { get; set; }
-        public string GameCoverPath { get; set; }
+
+        [JsonProperty("released")]
+        public string ReleaseDate { get; set; }
+
+        [JsonProperty("background_image")]
+        public string ImageUrl { get; set; }
+
+        [JsonProperty("rating")]
+        public double Rating { get; set; }
     }
 }

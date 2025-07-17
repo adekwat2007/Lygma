@@ -18,10 +18,10 @@ namespace GameTracker.Views
                 return window;
             });
 
-            services.AddTransient<LibraryPage>(s =>
+            services.AddTransient<HomePage>(s =>
             {
-                var model = s.GetRequiredService<LibraryViewModel>();
-                var page = new LibraryPage()
+                var model = s.GetRequiredService<HomeViewModel>();
+                var page = new HomePage()
                 {
                     DataContext = model
                 };
@@ -29,10 +29,10 @@ namespace GameTracker.Views
                 return page;
             });
 
-            services.AddTransient<AddGamePage>(s =>
+            services.AddTransient<CataloguePage>(s =>
             {
-                var model = s.GetRequiredService<AddGameViewModel>();
-                var page = new AddGamePage()
+                var model = s.GetRequiredService<CatalogueViewModel>();
+                var page = new CataloguePage()
                 {
                     DataContext = model
                 };

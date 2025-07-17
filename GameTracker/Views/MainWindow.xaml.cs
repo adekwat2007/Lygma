@@ -13,5 +13,16 @@ namespace GameTracker.Views
         {
             Close();
         }
+        private void Minimize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+        private void Maximize_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Normal)
+                WindowState = WindowState.Maximized;
+            else if (WindowState == WindowState.Maximized)
+                WindowState = WindowState.Normal;
+        }
     }
 }
