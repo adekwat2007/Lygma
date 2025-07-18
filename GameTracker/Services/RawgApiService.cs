@@ -1,9 +1,25 @@
-﻿using System.Net.Http;
-using GameTracker.Models;
+﻿using GameTracker.Models;
 using Newtonsoft.Json.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace GameTracker.Services
 {
+    internal class GenreResponse
+    {
+        public List<Genre> Results { get; set; } = new();
+    }
+
+    internal class PlatformResponse
+    {
+        public List<PlatformWrapper> Results { get; set; } = new();
+    }
+
+    internal class DeveloperResponse
+    {
+        public List<Developer> Results { get; set; } = new();
+    }
+
     internal class RawgApiService
     {
         private readonly HttpClient _httpClient;
@@ -26,6 +42,28 @@ namespace GameTracker.Services
             var results = json["results"]?.ToObject<List<Game>>() ?? new();
 
             return results;
+        }
+
+        public async Task<List<Genre>> GetGenresAsync(int limit)
+        {
+            var url = $"{_baseUrl}genres?key={_apiKey}&page_size={limit}";
+            var response = await _httpClient.GetFromJsonAsync<GenreResponse>(url);
+
+            return response?.Results ?? new();
+        }
+        public async Task<List<Platform>> GetPlatformsAsync()
+        {
+            var url = $"{_baseUrl}platforms/lists/parents?key={_apiKey}";
+            var response = await _httpClient.GetFromJsonAsync<PlatformResponse>(url);
+
+            return response?.Results.Select(r => r.Platform).ToList() ?? new();
+        }
+        public async Task<List<Developer>> GetDevelopersAsync()
+        {
+            var url = $"{_baseUrl}developers?key={_apiKey}";
+            var response = await _httpClient.GetFromJsonAsync<DeveloperResponse>(url);
+
+            return response?.Results ?? new();
         }
     }
 }

@@ -4,10 +4,92 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:GameTracker.Views"
+             xmlns:xc="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:vm="clr-namespace:GameTracker.ViewModels"
+             xmlns:fa="clr-namespace:FontAwesome5;assembly=FontAwesome5.Net"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance vm:CatalogueViewModel, IsDesignTimeCreatable=True}"
+             Background="#191919">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="0.25*" />
+        </Grid.ColumnDefinitions>
 
-        <TextBlock FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Add Game" />
+        <!--Side picker-->
+        <Border Grid.Column="1" BorderBrush="#383838" BorderThickness="1" CornerRadius="6"
+                Margin="20, 40" Background="#151515">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="#8e919b" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <!--Genres-->
+                    <Grid Height="800">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="20, 20, 20, 2">
+                            <Ellipse  Width="12" Height="12" Fill="#683cb4" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                            <TextBlock Text="Genres" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0" />
+                        </StackPanel>
+                        <TextBlock Grid.Row="1" Text="{Binding Genres.Count, StringFormat='\{0\} available'}" Margin="20, 0" VerticalAlignment="Center" />
+                        <Border Grid.Row="2" Style="{StaticResource SearchBorder}" Width="228" Margin="0, 20, 0, 0">
+                            <xc:WatermarkTextBox Style="{StaticResource Search}" Watermark="Filter..." />
+                        </Border>
+                        <ScrollViewer Grid.Row="3" Height="200" VerticalScrollBarVisibility="Auto" Margin="14, 25, 14, 0" VerticalAlignment="Top">
+                            <ListBox ItemsSource="{Binding Genres}" Background="Transparent" BorderThickness="0">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Background="Transparent" BorderThickness="1" Margin="0, 3"
+                                                  HorizontalAlignment="Left">
+                                            <CheckBox.Template>
+                                                <ControlTemplate TargetType="CheckBox">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition />
+                                                            <ColumnDefinition />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Border x:Name="CheckBoxBorder" Grid.Column="0" Style="{StaticResource CheckBoxBorder}">
+                                                            <fa:ImageAwesome x:Name="CheckMark" Icon="Solid_Check" Foreground="#8e919b" Width="14"
+                                                                             VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                                        </Border>
+                                                        <ContentPresenter Grid.Column="1" x:Name="content" Margin="5,0,0,0"
+                                                                          HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsChecked" Value="True">
+                                                            <Setter TargetName="CheckMark" Property="Opacity" Value="1" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsChecked" Value="False">
+                                                            <Setter TargetName="CheckMark" Property="Opacity" Value="0" />
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </CheckBox.Template>
+                                            <CheckBox.Content>
+                                                <TextBlock Text="{Binding Name}" FontSize="16"  Foreground="#8e919b" />
+                                            </CheckBox.Content>
+                                        </CheckBox>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </ScrollViewer>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

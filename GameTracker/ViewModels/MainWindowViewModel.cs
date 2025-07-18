@@ -6,6 +6,8 @@ using GameTracker.Models;
 using GameTracker.Services;
 using GameTracker.ViewModels.Interfaces;
 using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace GameTracker.ViewModels
 {
@@ -16,10 +18,16 @@ namespace GameTracker.ViewModels
         private RawgApiService _rawgService;
         private IViewModelFactory _viewModelFactory;
 
-        [ObservableProperty] private object currentPage = new HomeViewModel();
+        [ObservableProperty] private IViewModel currentPage = new CatalogueViewModel();
         [ObservableProperty] private string currentPageName;
+        [ObservableProperty] private string searchQuery;
 
-        public ObservableCollection<Game> SearchResults { get; } = new();
+        [ObservableProperty] private bool homeSelected;
+        [ObservableProperty] private bool catalogueSelected;
+        [ObservableProperty] private bool downloadsSelected;
+        [ObservableProperty] private bool settingsSelected;
+
+        [ObservableProperty] private bool splitterPressed;
 
         public MainWindowViewModel()
         {
@@ -39,21 +47,25 @@ namespace GameTracker.ViewModels
                 case "Home":
                     CurrentPage = _viewModelFactory.CreateViewModel(ViewType.Home);
                     CurrentPageName = ((HomeViewModel)CurrentPage).PageName;
+                    HomeSelected = true;
                     break;
 
                 case "Catalogue":
                     CurrentPage = _viewModelFactory.CreateViewModel(ViewType.Catalogue);
                     CurrentPageName = ((CatalogueViewModel)CurrentPage).PageName;
+                    CatalogueSelected = true;
                     break;
 
                 case "Downloads":
                     CurrentPage = _viewModelFactory.CreateViewModel(ViewType.Downloads);
                     CurrentPageName = ((DownloadsViewModel)CurrentPage).PageName;
+                    DownloadsSelected = true;
                     break;
 
                 case "Settings":
                     CurrentPage = _viewModelFactory.CreateViewModel(ViewType.Settings);
                     CurrentPageName = ((SettingsViewModel)CurrentPage).PageName;
+                    SettingsSelected = true;
                     break;
 
                 default:
@@ -62,13 +74,17 @@ namespace GameTracker.ViewModels
         }
 
         [RelayCommand]
-        private async Task SearchAsync(string query)
+        private async Task SearchAsync()
         {
-            SearchResults.Clear();
-            var results = await _rawgService.SearchGamesAsync(query);
+            NavigateTo("Catalogue");
+            var model = (CatalogueViewModel)CurrentPage;
+
+            model.SearchResults.Clear();
+
+            var results = await _rawgService.SearchGamesAsync(searchQuery);
             foreach (var game in results)
             {
-                SearchResults.Add(game);
+                model.SearchResults.Add(game);
             }
         }
     }

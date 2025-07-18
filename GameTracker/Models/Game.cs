@@ -1,6 +1,4 @@
-﻿using GameTracker.Enums;
-using GameTracker.Models.Interfaces;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace GameTracker.Models
 {
@@ -17,5 +15,14 @@ namespace GameTracker.Models
 
         [JsonProperty("rating")]
         public double Rating { get; set; }
+
+        [JsonProperty("genres")]
+        public List<Genre> Genres { get; set; }
+
+        [JsonProperty("platforms")]
+        public List<PlatformWrapper> Platforms { get; set; }
+
+        [JsonProperty("developers")]
+        public List<Developer> Developers { get; set; }
     }
 }

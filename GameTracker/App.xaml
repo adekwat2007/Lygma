@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:GameTracker"
              xmlns:vm="clr-namespace:GameTracker.ViewModels"
-             xmlns:v="clr-namespace:GameTracker.Views">
+             xmlns:v="clr-namespace:GameTracker.Views"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
     <Application.Resources>
         <DataTemplate DataType="{x:Type vm:HomeViewModel}">
             <v:HomePage />
@@ -11,6 +12,61 @@
         <DataTemplate DataType="{x:Type vm:CatalogueViewModel}">
             <v:CataloguePage />
         </DataTemplate>
-
+        <DataTemplate DataType="{x:Type vm:DownloadsViewModel}">
+            <v:DownloadsPage />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+            <v:SettingsPage />
+        </DataTemplate>
+        <Style x:Key="SearchBorder" TargetType="Border">
+            <Setter Property="BorderBrush" Value="#8e8e8e" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Background" Value="#1c1c1c" />
+            <Setter Property="Height" Value="40" />
+        </Style>
+        <Style x:Key="CheckBoxBorder" TargetType="Border">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation
+                                    Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)"
+                                    From="#383838"
+                                    To="#8a8a8a"
+                                    Duration="0:0:0.1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation
+                                    Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)"
+                                    From="#8a8a8a"
+                                    To="#383838"
+                                    Duration="0:0:0.1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+            <Setter Property="BorderBrush" Value="#383838" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Width" Value="22"/>
+            <Setter Property="Height" Value="22"/>
+        </Style>
+        <Style x:Key="Search" TargetType="xctk:WatermarkTextBox">
+            <Setter Property="Background" Value="#1c1c1c" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="4, 0" />
+            <Setter Property="Padding" Value="10, 0, 0, 0" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
     </Application.Resources>
 </Application>
