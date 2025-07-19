@@ -8,7 +8,7 @@ namespace GameTracker.ViewModels
 {
     internal partial class CatalogueViewModel : ObservableObject, IViewModel
     {
-        private RawgApiService _rawgService;
+        private CachingProvider _cachingProvider;
 
         public string PageName { get; set; } = "Catalogue";
 
@@ -19,28 +19,23 @@ namespace GameTracker.ViewModels
 
         public CatalogueViewModel()
         {
-            Genres = new ObservableCollection<Genre>(Enumerable.Range(1, 20).Select(i => new Genre()
-            {
-                Name = "Test"
-            }));
         }
 
-        public CatalogueViewModel(RawgApiService rawgService)
+        public CatalogueViewModel(CachingProvider cachingProvider)
         {
-            _rawgService = rawgService;
-            LoadGenresAsync();
+            _cachingProvider = cachingProvider;
+
+            LoadCache();
         }
 
-        public async Task LoadGenresAsync()
+        private void LoadCache()
         {
-            Genres.Clear();
-
-            var genres = await _rawgService.GetGenresAsync(100);
-
-            foreach (var genre in genres)
-            {
-                Genres.Add(genre);
-            }
+            if (_cachingProvider.Genres is not null)
+                Genres = new ObservableCollection<Genre>(_cachingProvider.Genres);
+            if (_cachingProvider.Platforms is not null)
+                Platforms = new ObservableCollection<Platform>(_cachingProvider.Platforms);
+            if (_cachingProvider.Developers is not null)
+                Developers = new ObservableCollection<Developer>(_cachingProvider.Developers);
         }
     }
 }

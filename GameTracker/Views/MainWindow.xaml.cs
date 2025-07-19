@@ -1,27 +1,21 @@
 ﻿using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
+using GameTracker.ViewModels;
 
 namespace GameTracker.Views
 {
     public partial class MainWindow : Window
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        public MainWindow() => InitializeComponent();
 
         #region Команды для кнопок окна
 
-        private void Close_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+        private void Close_Click(object sender, RoutedEventArgs e) => Close();
 
-        private void Minimize_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
+        private void Minimize_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
         private void Maximize_Click(object sender, RoutedEventArgs e)
         {
@@ -52,5 +46,13 @@ namespace GameTracker.Views
         }
 
         #endregion Анимация GridSplitter
+
+        private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainWindowViewModel vm)
+                await vm.LoadData();
+        }
+
+        private void MainWindow_OnMouseDown(object sender, MouseButtonEventArgs e) => Keyboard.ClearFocus();
     }
 }

@@ -20,7 +20,7 @@ namespace GameTracker.Models
         public List<Genre> Genres { get; set; }
 
         [JsonProperty("platforms")]
-        public List<PlatformWrapper> Platforms { get; set; }
+        public List<Platform> Platforms { get; set; }
 
         [JsonProperty("developers")]
         public List<Developer> Developers { get; set; }

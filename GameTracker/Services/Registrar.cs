@@ -6,6 +6,7 @@ namespace GameTracker.Services
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
+            services.AddSingleton<CachingProvider>();
             services.AddHttpClient<RawgApiService>();
 
             return services;

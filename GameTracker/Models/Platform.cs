@@ -7,10 +7,4 @@ namespace GameTracker.Models
         [JsonProperty("name")]
         public string Name { get; set; }
     }
-
-    internal class PlatformWrapper
-    {
-        [JsonProperty("platform")]
-        public Platform Platform { get; set; }
-    }
 }

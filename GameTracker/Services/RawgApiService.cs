@@ -12,7 +12,7 @@ namespace GameTracker.Services
 
     internal class PlatformResponse
     {
-        public List<PlatformWrapper> Results { get; set; } = new();
+        public List<Platform> Results { get; set; } = new();
     }
 
     internal class DeveloperResponse
@@ -44,20 +44,22 @@ namespace GameTracker.Services
             return results;
         }
 
-        public async Task<List<Genre>> GetGenresAsync(int limit)
+        public async Task<List<Genre>> GetGenresAsync()
         {
-            var url = $"{_baseUrl}genres?key={_apiKey}&page_size={limit}";
+            var url = $"{_baseUrl}genres?key={_apiKey}";
             var response = await _httpClient.GetFromJsonAsync<GenreResponse>(url);
 
             return response?.Results ?? new();
         }
+
         public async Task<List<Platform>> GetPlatformsAsync()
         {
-            var url = $"{_baseUrl}platforms/lists/parents?key={_apiKey}";
+            var url = $"{_baseUrl}platforms?key={_apiKey}";
             var response = await _httpClient.GetFromJsonAsync<PlatformResponse>(url);
 
-            return response?.Results.Select(r => r.Platform).ToList() ?? new();
+            return response?.Results ?? new();
         }
+
         public async Task<List<Developer>> GetDevelopersAsync()
         {
             var url = $"{_baseUrl}developers?key={_apiKey}";
