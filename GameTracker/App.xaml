@@ -6,6 +6,8 @@
              xmlns:v="clr-namespace:GameTracker.Views"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
     <Application.Resources>
+        <SolidColorBrush x:Key="TextColor" Color="#8e919b" />
+
         <DataTemplate DataType="{x:Type vm:HomeViewModel}">
             <v:HomePage />
         </DataTemplate>
@@ -19,11 +21,16 @@
             <v:SettingsPage />
         </DataTemplate>
         <Style x:Key="SearchBorder" TargetType="Border">
-            <Setter Property="BorderBrush" Value="#8e8e8e" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#8e8e8e" />
+                </Trigger>
+            </Style.Triggers>
+            <Setter Property="BorderBrush" Value="#3e3e3e" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="CornerRadius" Value="6" />
             <Setter Property="Background" Value="#1c1c1c" />
-            <Setter Property="Height" Value="40" />
+            <Setter Property="Height" Value="36" />
         </Style>
         <Style x:Key="CheckBoxBorder" TargetType="Border">
             <Style.Triggers>
@@ -56,17 +63,27 @@
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="CornerRadius" Value="6" />
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Width" Value="22"/>
-            <Setter Property="Height" Value="22"/>
+            <Setter Property="Width" Value="22" />
+            <Setter Property="Height" Value="22" />
         </Style>
-        <Style x:Key="Search" TargetType="xctk:WatermarkTextBox">
+        <Style x:Key="SearchTextBox" TargetType="xctk:WatermarkTextBox">
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                        <Condition Property="IsKeyboardFocused" Value="False"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Cursor" Value="Arrow"/>
+                </MultiTrigger>
+            </Style.Triggers>
             <Setter Property="Background" Value="#1c1c1c" />
             <Setter Property="Height" Value="32" />
             <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Margin" Value="4, 0" />
-            <Setter Property="Padding" Value="10, 0, 0, 0" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="Margin" Value="3,0,0,0"></Setter>
             <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="KeepWatermarkOnGotFocus" Value="True"/>
+            <Setter Property="Foreground" Value="#cedbe1"/>
         </Style>
     </Application.Resources>
 </Application>

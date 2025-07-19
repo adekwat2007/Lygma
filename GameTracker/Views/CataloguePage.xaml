@@ -11,7 +11,8 @@
              d:DataContext="{d:DesignInstance vm:CatalogueViewModel, IsDesignTimeCreatable=True}"
              Background="#191919">
     <UserControl.Resources>
-        <!--scrollbar background-->
+
+        <!--all scrollbar background-->
         <Style x:Key="ScrollBarPageButton" TargetType="{x:Type RepeatButton}">
             <Setter Property="Visibility" Value="Visible" />
             <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -27,8 +28,8 @@
             </Setter>
         </Style>
 
-        <!--scrollbar thumb -->
-        <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+        <!--filter scrollbar thumb -->
+        <Style x:Key="FilterScrollBarThumb" TargetType="{x:Type Thumb}">
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Setter Property="IsTabStop" Value="false" />
@@ -39,20 +40,20 @@
                         <Border
                         CornerRadius="3"
                         BorderThickness="0"
-                        Width="6"
+                        Width="9"
                         Background="#2e2e2e" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <!--scrollbar -->
-        <Style TargetType="{x:Type ScrollBar}">
+        <!--filter scrollbar -->
+        <Style x:Key="FilterScrollBar" TargetType="{x:Type ScrollBar}">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Style.Triggers>
                 <Trigger Property="Orientation" Value="Vertical">
-                    <Setter Property="Width" Value="6" />
+                    <Setter Property="Width" Value="9" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ScrollBar">
@@ -62,7 +63,7 @@
                                             <RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageUpCommand" />
                                         </Track.DecreaseRepeatButton>
                                         <Track.Thumb>
-                                            <Thumb Style="{StaticResource ScrollBarThumb}" />
+                                            <Thumb Style="{StaticResource FilterScrollBarThumb}" />
                                         </Track.Thumb>
                                         <Track.IncreaseRepeatButton>
                                             <RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageDownCommand" />
@@ -76,8 +77,11 @@
             </Style.Triggers>
         </Style>
 
-        <!--scroll viewer -->
-        <Style TargetType="{x:Type ScrollViewer}">
+        <!--filter scroll viewer -->
+        <Style x:Key="FilterScrollViewer" TargetType="{x:Type ScrollViewer}">
+            <Setter Property="Margin" Value="0, 20, 0, 0" />
+            <Setter Property="Height" Value="310" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ScrollViewer}">
@@ -90,79 +94,153 @@
                             <ScrollBar
                             x:Name="PART_VerticalScrollBar"
                             Grid.Column="1"
+                            Opacity="0"
+                            Style="{StaticResource FilterScrollBar}"
                             Value="{TemplateBinding VerticalOffset}"
                             Maximum="{TemplateBinding ScrollableHeight}"
                             ViewportSize="{TemplateBinding ViewportHeight}"
                             Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
                         </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PART_VerticalScrollBar" Property="Opacity" Value="1" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="Circle" TargetType="Ellipse">
+            <Setter Property="Width" Value="12" />
+            <Setter Property="Height" Value="12" />
+        </Style>
+
+        <Style x:Key="FilterItemsControl" TargetType="ItemsControl">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+
+        <Style x:Key="FilterItemCheckBox" TargetType="CheckBox">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Margin" Value="0, 3" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="CheckBoxBorder" Grid.Column="0" Style="{StaticResource CheckBoxBorder}">
+                                <fa:ImageAwesome x:Name="CheckMark" Icon="Solid_Check" Foreground="#8e919b" Width="14"
+                                                     VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </Border>
+                            <ContentPresenter Grid.Column="1" Margin="5,0,0,0" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="CheckMark" Property="Opacity" Value="1" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="CheckMark" Property="Opacity" Value="0" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}" />
+        </Style>
     </UserControl.Resources>
+
     <ScrollViewer>
-        <Grid ClipToBounds="True">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="340" />
+                <ColumnDefinition Width="320" />
             </Grid.ColumnDefinitions>
             <!--Genres-->
             <Border Grid.Column="1" Background="#151515" Margin="14, 20 " BorderThickness="1" BorderBrush="#383838" CornerRadius="6">
-
-                <StackPanel  Orientation="Vertical">
-                    <StackPanel.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="#8e919b" />
-                        </Style>
-                    </StackPanel.Resources>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="20, 20, 20, 0">
-                        <Ellipse  Width="12" Height="12" Fill="#683cb4" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <TextBlock Text="Genres" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0"  Orientation="Vertical" Margin="20, 15">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                            <Ellipse Style="{StaticResource Circle}" Fill="#683cb4" />
+                            <TextBlock Text="Genres" FontSize="20" Margin="5, 0" />
+                        </StackPanel>
+                        <TextBlock  Text="{Binding Genres.Count, StringFormat='\{0\} available'}" />
+                        <Border Style="{StaticResource SearchBorder}"  Margin="0 20, 0, 0">
+                            <xc:WatermarkTextBox Style="{StaticResource SearchTextBox}" Watermark="Filter..." />
+                        </Border>
+                        <ScrollViewer Style="{StaticResource FilterScrollViewer}">
+                            <ItemsControl  Style="{StaticResource FilterItemsControl}" ItemsSource="{Binding Genres}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Style="{StaticResource FilterItemCheckBox}">
+                                            <CheckBox.Content>
+                                                <TextBlock Text="{Binding Name}" FontSize="16" Foreground="{StaticResource TextColor}" />
+                                            </CheckBox.Content>
+                                        </CheckBox>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
                     </StackPanel>
-                    <TextBlock  Text="{Binding Genres.Count, StringFormat='\{0\} available'}" Margin="20, 0" VerticalAlignment="Center" />
-                    <Border Style="{StaticResource SearchBorder}" Width="228" Margin="0, 20, 0, 0">
-                        <xc:WatermarkTextBox Style="{StaticResource Search}" Watermark="Filter..." />
-                    </Border>
-                    <ScrollViewer Margin="22, 20, 20, 0" VerticalScrollBarVisibility="Auto" Height="310">
-                        <ItemsControl  ItemsSource="{Binding Genres}" Background="Transparent" BorderThickness="0"
-                          VerticalAlignment="Top">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <CheckBox Background="Transparent" BorderThickness="1" Margin="0, 3"
-                                              HorizontalAlignment="Left">
-                                        <CheckBox.Template>
-                                            <ControlTemplate TargetType="CheckBox">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition />
-                                                        <ColumnDefinition />
-                                                    </Grid.ColumnDefinitions>
-                                                    <Border x:Name="CheckBoxBorder" Grid.Column="0" Style="{StaticResource CheckBoxBorder}">
-                                                        <fa:ImageAwesome x:Name="CheckMark" Icon="Solid_Check" Foreground="#8e919b" Width="14"
-                                                                         VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                                    </Border>
-                                                    <ContentPresenter Grid.Column="1" x:Name="content" Margin="5,0,0,0"
-                                                                      HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                                </Grid>
-                                                <ControlTemplate.Triggers>
-                                                    <Trigger Property="IsChecked" Value="True">
-                                                        <Setter TargetName="CheckMark" Property="Opacity" Value="1" />
-                                                    </Trigger>
-                                                    <Trigger Property="IsChecked" Value="False">
-                                                        <Setter TargetName="CheckMark" Property="Opacity" Value="0" />
-                                                    </Trigger>
-                                                </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </CheckBox.Template>
-                                        <CheckBox.Content>
-                                            <TextBlock Text="{Binding Name}" FontSize="16"  Foreground="#8e919b" />
-                                        </CheckBox.Content>
-                                    </CheckBox>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-                </StackPanel>
+                    <StackPanel Grid.Row="1"  Orientation="Vertical" Margin="20, 15">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                            <Ellipse Style="{StaticResource Circle}" Fill="#2f4d1a" />
+                            <TextBlock Text="Platforms" FontSize="20" Margin="5, 0" />
+                        </StackPanel>
+                        <TextBlock  Text="{Binding Platforms.Count, StringFormat='\{0\} available'}" />
+                        <Border Style="{StaticResource SearchBorder}"  Margin="0 20, 0, 0">
+                            <xc:WatermarkTextBox Style="{StaticResource SearchTextBox}" Watermark="Filter..." />
+                        </Border>
+                        <ScrollViewer Style="{StaticResource FilterScrollViewer}">
+                            <ItemsControl  Style="{StaticResource FilterItemsControl}" ItemsSource="{Binding Platforms}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Style="{StaticResource FilterItemCheckBox}">
+                                            <CheckBox.Content>
+                                                <TextBlock Text="{Binding Name}" FontSize="16" Foreground="{StaticResource TextColor}" />
+                                            </CheckBox.Content>
+                                        </CheckBox>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2"  Orientation="Vertical" Margin="20, 15">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                            <Ellipse Style="{StaticResource Circle}" Fill="#996133" />
+                            <TextBlock Text="Developers" FontSize="20" Margin="5, 0" />
+                        </StackPanel>
+                        <TextBlock  Text="{Binding Developers.Count, StringFormat='\{0\} available'}" />
+                        <Border Style="{StaticResource SearchBorder}"  Margin="0 20, 0, 0">
+                            <xc:WatermarkTextBox Style="{StaticResource SearchTextBox}" Watermark="Filter..." />
+                        </Border>
+                        <ScrollViewer Style="{StaticResource FilterScrollViewer}">
+                            <ItemsControl  Style="{StaticResource FilterItemsControl}" ItemsSource="{Binding Developers}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Style="{StaticResource FilterItemCheckBox}">
+                                            <CheckBox.Content>
+                                                <TextBlock Text="{Binding Name}" FontSize="16" Foreground="{StaticResource TextColor}" />
+                                            </CheckBox.Content>
+                                        </CheckBox>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Grid>
             </Border>
         </Grid>
     </ScrollViewer>

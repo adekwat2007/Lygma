@@ -11,34 +11,33 @@
         Height="1080"
         Width="1920"
         d:DataContext="{d:DesignInstance vm:MainWindowViewModel, IsDesignTimeCreatable=True}"
+        Loaded="MainWindow_OnLoaded"
         SnapsToDevicePixels="True"
         UseLayoutRounding="True"
-        FontFamily="/Fonts/#Poppins"
-        Background="#151515">
-    <Window.Resources>
-        
-    </Window.Resources>
+        FontFamily="pack://application:,,,/GameTracker;component/Fonts/#ALS Direct"
+        Background="#151515"
+        MouseDown="MainWindow_OnMouseDown">
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="32"></WindowChrome>
+        <WindowChrome CaptionHeight="40" ResizeBorderThickness="5" />
     </WindowChrome.WindowChrome>
-    <Grid>
+    <Grid Margin="5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80*" MinWidth="200" MaxWidth="450" />
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="324*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <!--Titlebar-->
         <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0"
                      Background="#151515">
-            <TextBlock Text="Hydra" VerticalAlignment="Center" Margin="12,0"
-                       Foreground="#6b6b74" DockPanel.Dock="Left" FontWeight="DemiBold"
-                       FontSize="16" />
+            <TextBlock Text="Hydra" VerticalAlignment="Center" Margin="25,5, 0, 0"
+                       Foreground="#8e919b" DockPanel.Dock="Left" FontWeight="Bold"
+                       FontSize="14" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
                 <StackPanel.Resources>
                     <Style x:Key="ControlButtons" TargetType="Button">
@@ -81,7 +80,7 @@
         </Grid>
 
         <!--Separator-->
-        <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" BorderThickness="0,0,0, 2" BorderBrush="#383838" />
+        <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" BorderThickness="0,0,0, 1" BorderBrush="#383838" />
 
         <!--Side menu-->
         <StackPanel Name="SideMenu" Grid.Column="0"  Grid.Row="2" Orientation="Vertical" Background="#151515" Grid.ColumnSpan="2">
@@ -94,6 +93,9 @@
                         <Trigger Property="IsChecked" Value="True">
                             <Setter Property="Background" Value="#383838" />
                         </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"></Setter>
+                        </Trigger>
                     </Style.Triggers>
                     <Setter Property="Background" Value="Transparent" />
                     <Setter Property="Padding" Value="4" />
@@ -103,7 +105,7 @@
                     <Setter Property="FontWeight" Value="Normal" />
                     <Setter Property="FontSize" Value="16" />
                     <Setter Property="Cursor" Value="Hand" />
-                    <Setter Property="Height" Value="35" />
+                    <Setter Property="Height" Value="33" />
                     <Setter Property="Margin" Value="15, 4" />
                     <Setter Property="Template">
                         <Setter.Value>
@@ -123,66 +125,70 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="14" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="Foreground" Value="#c0c1c7" />
+                </Style>
             </StackPanel.Resources>
-            <RadioButton Name="SignInButton" Height="45" Margin="15, 30">
+            <RadioButton Name="SignInButton" Height="45" Margin="15, 17, 0, 26">
                 <RadioButton.Content>
                     <StackPanel Orientation="Horizontal">
-                        <Border BorderThickness="1" BorderBrush="#3e3e3e" Width="35" Height="35"
+                        <Border BorderThickness="1" BorderBrush="#3e3e3e" Width="33" Height="33"
                                 CornerRadius="4"
                                 Background="#1c1c1c">
-                            <fa:ImageAwesome Icon="Regular_User" Foreground="#c0c1c7" Width="22" />
+                            <fa:ImageAwesome Icon="Regular_User" Foreground="#c0c1c7" Width="19" />
                         </Border>
-                        <TextBlock Text="Sign in" VerticalAlignment="Center" FontWeight="Medium" Foreground="#c0c1c7"  Margin="12, 0, 0, 0" />
+                        <TextBlock Text="Sign in"  Margin="12, 0, 0, 0" />
                     </StackPanel>
                 </RadioButton.Content>
             </RadioButton>
-            <RadioButton Name="HomeMenuButton" Command="{Binding NavigateToCommand}" CommandParameter="Home"
+            <RadioButton Name="HomeMenuButton" Command="{Binding NavigateToHomeCommand}"
                          IsChecked="{Binding HomeSelected}">
                 <RadioButton.Content>
                     <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Solid_Home" Width="20" Foreground="#c0c1c7" />
-                        <TextBlock Text="Home" VerticalAlignment="Center" Foreground="#c0c1c7" Margin="12, 0, 0, 0" />
+                        <fa:ImageAwesome Icon="Solid_Home" Width="18" Foreground="#c0c1c7" />
+                        <TextBlock Text="Home" Margin="12, 0, 0, 0" />
                     </StackPanel>
                 </RadioButton.Content>
             </RadioButton>
-            <RadioButton Name="CatalogueMenuButton" Command="{Binding NavigateToCommand}" CommandParameter="Catalogue"
+            <RadioButton Name="CatalogueMenuButton" Command="{Binding NavigateToCatalogueCommand}"
                          IsChecked="{Binding CatalogueSelected}">
                 <RadioButton.Content>
                     <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Solid_Gamepad" Width="20" Foreground="#c0c1c7" />
-                        <TextBlock Text="Catalogue" VerticalAlignment="Center" Foreground="#c0c1c7" Margin="12, 0, 0, 0" />
+                        <fa:ImageAwesome Icon="Solid_Gamepad" Width="18" Foreground="#c0c1c7" />
+                        <TextBlock Text="Catalogue" Margin="12, 0, 0, 0" />
                     </StackPanel>
                 </RadioButton.Content>
             </RadioButton>
-            <RadioButton Name="DownloadsMenuButton" Command="{Binding NavigateToCommand}" CommandParameter="Downloads"
+            <RadioButton Name="DownloadsMenuButton" Command="{Binding NavigateToDownloadsCommand}"
                          IsChecked="{Binding DownloadsSelected}">
                 <RadioButton.Content>
                     <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Solid_Download" Width="18" Foreground="#c0c1c7" />
-                        <TextBlock Text="Downloads" VerticalAlignment="Center" Foreground="#c0c1c7"  Margin="14, 0, 0, 0" />
+                        <fa:ImageAwesome Icon="Solid_Download" Width="16" Foreground="#c0c1c7" />
+                        <TextBlock Text="Downloads"  Margin="14, 0, 0, 0" />
                     </StackPanel>
                 </RadioButton.Content>
             </RadioButton>
-            <RadioButton Name="SettingsMenuButton" Command="{Binding NavigateToCommand}" CommandParameter="Settings"
+            <RadioButton Name="SettingsMenuButton" Command="{Binding NavigateToSettingsCommand}"
                          IsChecked="{Binding SettingsSelected}">
                 <RadioButton.Content>
                     <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Solid_Cog" Width="18" Foreground="#c0c1c7" />
-                        <TextBlock Text="Settings" VerticalAlignment="Center" Foreground="#c0c1c7"  Margin="14, 0, 0, 0" />
+                        <fa:ImageAwesome Icon="Solid_Cog" Width="16" Foreground="#c0c1c7" />
+                        <TextBlock Text="Settings" Margin="14, 0, 0, 0" />
                     </StackPanel>
                 </RadioButton.Content>
             </RadioButton>
 
-            <TextBlock Text="MY LIBRARY" FontSize="14" FontWeight="DemiBold" Foreground="#c0c1c7" Margin="15, 30" />
+            <TextBlock Text="MY LIBRARY" FontSize="13" FontWeight="Bold" Margin="15, 22, 0, 18" />
 
             <Border Style="{StaticResource SearchBorder}" Margin="15, 0">
-                <xc:WatermarkTextBox Style="{StaticResource Search}" Watermark="Filter library">
-                </xc:WatermarkTextBox>
+                <xc:WatermarkTextBox Style="{StaticResource SearchTextBox}" Watermark="Filter library" />
             </Border>
         </StackPanel>
 
         <!--Vertical splitter-->
-        <GridSplitter Grid.Column="1"  Grid.Row="2" Width="2" HorizontalAlignment="Center" Background="#383838"
+        <GridSplitter Grid.Column="1"  Grid.Row="2" Width="1" HorizontalAlignment="Center" Background="#383838"
                       DragStarted="MenuSplitter_OnDragStarted" DragCompleted="MenuSplitter_OnDragCompleted">
             <GridSplitter.Style>
                 <Style TargetType="GridSplitter">
@@ -201,7 +207,7 @@
         <!--Main header-->
         <Grid Grid.Column="2" Grid.Row="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.1*" />
+                <RowDefinition Height="0.077*" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
@@ -209,22 +215,24 @@
                 <TextBlock Text="{Binding CurrentPageName}" Foreground="#c0c1c7" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"
                    FontSize="19" FontWeight="DemiBold" />
                 <Border Style="{StaticResource SearchBorder}" Width="200" HorizontalAlignment="Right" Margin="20, 0">
-                    <xc:WatermarkTextBox Name="SearchTextBox" Style="{StaticResource Search}"
-                                 Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
-                                 Width="200">
-                        <xc:WatermarkTextBox.InputBindings>
-                            <KeyBinding Key="Enter" Command="{Binding SearchCommand}"></KeyBinding>
-                        </xc:WatermarkTextBox.InputBindings>
-                        <xc:WatermarkTextBox.Watermark>
-                            <StackPanel Orientation="Horizontal">
-                                <fa:ImageAwesome Icon="Solid_Search" Foreground="#c0c1c7" Width="17" />
-                                <TextBlock Text="Search games" Margin="10,0,0,0" FontSize="13" />
-                            </StackPanel>
-                        </xc:WatermarkTextBox.Watermark>
-                    </xc:WatermarkTextBox>
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Icon="Solid_Search" Foreground="#c0c1c7" Width="15" Margin="10 0 0 0 "/>
+                        <xc:WatermarkTextBox Name="SearchTextBox" Style="{StaticResource SearchTextBox}"
+                                             Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                                             Width="200">
+                            <xc:WatermarkTextBox.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+                            </xc:WatermarkTextBox.InputBindings>
+                            <xc:WatermarkTextBox.Watermark>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Search games" FontSize="13" />
+                                </StackPanel>
+                            </xc:WatermarkTextBox.Watermark>
+                        </xc:WatermarkTextBox>
+                    </StackPanel>
                 </Border>
             </Grid>
-            <Border Grid.Row="1" BorderThickness="0,0,0,3" BorderBrush="#383838" />
+            <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="#383838" />
 
             <!--Page-->
             <ContentControl Grid.Row="2" Content="{Binding CurrentPage}" />
