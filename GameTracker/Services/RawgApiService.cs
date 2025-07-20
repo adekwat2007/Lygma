@@ -1,25 +1,9 @@
 ﻿using GameTracker.Models;
-using Newtonsoft.Json.Linq;
 using System.Net.Http;
-using System.Net.Http.Json;
+using Newtonsoft.Json;  
 
 namespace GameTracker.Services
 {
-    internal class GenreResponse
-    {
-        public List<Genre> Results { get; set; } = new();
-    }
-
-    internal class PlatformResponse
-    {
-        public List<Platform> Results { get; set; } = new();
-    }
-
-    internal class DeveloperResponse
-    {
-        public List<Developer> Results { get; set; } = new();
-    }
-
     internal class RawgApiService
     {
         private readonly HttpClient _httpClient;
@@ -31,23 +15,20 @@ namespace GameTracker.Services
             _httpClient = httpClient;
         }
 
-        public async Task<List<Game>> SearchGamesAsync(string query)
+        public async Task<GameResponse> GetGamesAsync(int page, int pageSize = 20)
         {
-            var url = $"{_baseUrl}games?key={_apiKey}&search={Uri.EscapeDataString(query)}";
-            var response = await _httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
+            var url = $"{_baseUrl}games?key={_apiKey}&page={page}&page_size={pageSize}";
+            var json = await _httpClient.GetStringAsync(url);
+            var response = JsonConvert.DeserializeObject<GameResponse>(json);
 
-            var content = await response.Content.ReadAsStringAsync();
-            var json = JObject.Parse(content);
-            var results = json["results"]?.ToObject<List<Game>>() ?? new();
-
-            return results;
+            return response ?? new();
         }
 
         public async Task<List<Genre>> GetGenresAsync()
         {
             var url = $"{_baseUrl}genres?key={_apiKey}";
-            var response = await _httpClient.GetFromJsonAsync<GenreResponse>(url);
+            var json = await _httpClient.GetStringAsync(url);
+            var response = JsonConvert.DeserializeObject<GenreResponse>(json);
 
             return response?.Results ?? new();
         }
@@ -55,7 +36,8 @@ namespace GameTracker.Services
         public async Task<List<Platform>> GetPlatformsAsync()
         {
             var url = $"{_baseUrl}platforms?key={_apiKey}";
-            var response = await _httpClient.GetFromJsonAsync<PlatformResponse>(url);
+            var json = await _httpClient.GetStringAsync(url);
+            var response = JsonConvert.DeserializeObject<PlatformResponse>(json);
 
             return response?.Results ?? new();
         }
@@ -63,7 +45,8 @@ namespace GameTracker.Services
         public async Task<List<Developer>> GetDevelopersAsync()
         {
             var url = $"{_baseUrl}developers?key={_apiKey}";
-            var response = await _httpClient.GetFromJsonAsync<DeveloperResponse>(url);
+            var json = await _httpClient.GetStringAsync(url);
+            var response = JsonConvert.DeserializeObject<DeveloperResponse>(json);
 
             return response?.Results ?? new();
         }

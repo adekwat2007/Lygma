@@ -79,7 +79,7 @@
 
         <!--filter scroll viewer -->
         <Style x:Key="FilterScrollViewer" TargetType="{x:Type ScrollViewer}">
-            <Setter Property="Margin" Value="0, 20, 0, 0" />
+            <Setter Property="Margin" Value="0, 16, 0, 0" />
             <Setter Property="Height" Value="310" />
             <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
             <Setter Property="Template">
@@ -155,6 +155,59 @@
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="{StaticResource TextColor}" />
         </Style>
+
+        <Style x:Key="PageButton" TargetType="RadioButton">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
+                                                                    From="#151515" 
+                                                                    To="#2d2d2d"
+                                                                    Duration="0:0:0.1"/>
+                                <ColorAnimation Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)"
+                                                                    From="#383838" 
+                                                                    To="#4c4c4c"
+                                                                    Duration="0:0:0.1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
+                                                                    From="#2d2d2d"
+                                                                    To="#151515" 
+                                                                    Duration="0:0:0.1"/>
+                                <ColorAnimation Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)"
+                                                                    From="#383838" 
+                                                                    To="#4c4c4c"
+                                                                    Duration="0:0:0.1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+            <Setter Property="Width" Value="30" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="#383838"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <ScrollViewer>
@@ -177,9 +230,7 @@
                             <TextBlock Text="Genres" FontSize="20" Margin="5, 0" />
                         </StackPanel>
                         <TextBlock  Text="{Binding Genres.Count, StringFormat='\{0\} available'}" />
-                        <Border Style="{StaticResource SearchBorder}"  Margin="0 20, 0, 0">
-                            <xc:WatermarkTextBox Style="{StaticResource SearchTextBox}" Watermark="Filter..." />
-                        </Border>
+                        <xc:WatermarkTextBox Margin="0, 15, 0, 0" Style="{StaticResource WatermarkTextBox}" Watermark="Filter..." />
                         <ScrollViewer Style="{StaticResource FilterScrollViewer}">
                             <ItemsControl  Style="{StaticResource FilterItemsControl}" ItemsSource="{Binding Genres}">
                                 <ItemsControl.ItemTemplate>
@@ -200,9 +251,7 @@
                             <TextBlock Text="Platforms" FontSize="20" Margin="5, 0" />
                         </StackPanel>
                         <TextBlock  Text="{Binding Platforms.Count, StringFormat='\{0\} available'}" />
-                        <Border Style="{StaticResource SearchBorder}"  Margin="0 20, 0, 0">
-                            <xc:WatermarkTextBox Style="{StaticResource SearchTextBox}" Watermark="Filter..." />
-                        </Border>
+                        <xc:WatermarkTextBox Margin="0, 15, 0, 0" Style="{StaticResource WatermarkTextBox}" Watermark="Filter..." />
                         <ScrollViewer Style="{StaticResource FilterScrollViewer}">
                             <ItemsControl  Style="{StaticResource FilterItemsControl}" ItemsSource="{Binding Platforms}">
                                 <ItemsControl.ItemTemplate>
@@ -223,9 +272,7 @@
                             <TextBlock Text="Developers" FontSize="20" Margin="5, 0" />
                         </StackPanel>
                         <TextBlock  Text="{Binding Developers.Count, StringFormat='\{0\} available'}" />
-                        <Border Style="{StaticResource SearchBorder}"  Margin="0 20, 0, 0">
-                            <xc:WatermarkTextBox Style="{StaticResource SearchTextBox}" Watermark="Filter..." />
-                        </Border>
+                        <xc:WatermarkTextBox Margin="0, 15, 0, 0" Style="{StaticResource WatermarkTextBox}" Watermark="Filter..." />
                         <ScrollViewer Style="{StaticResource FilterScrollViewer}">
                             <ItemsControl  Style="{StaticResource FilterItemsControl}" ItemsSource="{Binding Developers}">
                                 <ItemsControl.ItemTemplate>
@@ -242,6 +289,43 @@
                     </StackPanel>
                 </Grid>
             </Border>
+            <DockPanel Grid.Column="0">
+                <StackPanel DockPanel.Dock="Top"/>
+                <Grid DockPanel.Dock="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <RadioButton Grid.Column="0" Style="{StaticResource PageButton}" Content="awdawda" >
+                    </RadioButton>
+                </Grid>
+                <ItemsControl ItemsSource="{Binding Games}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="100">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Source="{Binding Background_Image}" 
+                                       Width="200" Stretch="Fill"/>
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}"/>
+                                <TextBlock Grid.Column="1" Grid.Row="1">
+                                </TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
         </Grid>
     </ScrollViewer>
 </UserControl>

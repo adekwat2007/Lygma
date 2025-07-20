@@ -8,6 +8,7 @@
         xmlns:vm="clr-namespace:GameTracker.ViewModels"
         xmlns:xc="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
+        d:DesignHeight="2000"
         Height="1080"
         Width="1920"
         d:DataContext="{d:DesignInstance vm:MainWindowViewModel, IsDesignTimeCreatable=True}"
@@ -88,7 +89,27 @@
                 <Style TargetType="RadioButton">
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#434242" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" 
+                                                        From="#151515"
+                                                        To="#434242"
+                                                        Duration="0:0:0.1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" 
+                                                        From="#434242"
+                                                        To="#151515"
+                                                        Duration="0:0:0.1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter Property="Background" Value="#383838" />
@@ -131,7 +152,7 @@
                     <Setter Property="Foreground" Value="#c0c1c7" />
                 </Style>
             </StackPanel.Resources>
-            <RadioButton Name="SignInButton" Height="45" Margin="15, 17, 0, 26">
+            <RadioButton Name="SignInButton" Height="45" Margin="15, 17, 15, 26">
                 <RadioButton.Content>
                     <StackPanel Orientation="Horizontal">
                         <Border BorderThickness="1" BorderBrush="#3e3e3e" Width="33" Height="33"
@@ -139,7 +160,7 @@
                                 Background="#1c1c1c">
                             <fa:ImageAwesome Icon="Regular_User" Foreground="#c0c1c7" Width="19" />
                         </Border>
-                        <TextBlock Text="Sign in"  Margin="12, 0, 0, 0" />
+                        <TextBlock Text="Sign in" FontWeight="Bold" FontSize="16" Margin="12, 0, 0, 0" />
                     </StackPanel>
                 </RadioButton.Content>
             </RadioButton>
@@ -182,9 +203,8 @@
 
             <TextBlock Text="MY LIBRARY" FontSize="13" FontWeight="Bold" Margin="15, 22, 0, 18" />
 
-            <Border Style="{StaticResource SearchBorder}" Margin="15, 0">
-                <xc:WatermarkTextBox Style="{StaticResource SearchTextBox}" Watermark="Filter library" />
-            </Border>
+            <xc:WatermarkTextBox Style="{DynamicResource WatermarkTextBox}" Watermark="Filter library" 
+                                 Margin="20, 0"/>
         </StackPanel>
 
         <!--Vertical splitter-->
@@ -214,23 +234,21 @@
             <Grid Grid.Row="0" HorizontalAlignment="Stretch" Background="#151515">
                 <TextBlock Text="{Binding CurrentPageName}" Foreground="#c0c1c7" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"
                    FontSize="19" FontWeight="DemiBold" />
-                <Border Style="{StaticResource SearchBorder}" Width="200" HorizontalAlignment="Right" Margin="20, 0">
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Solid_Search" Foreground="#c0c1c7" Width="15" Margin="10 0 0 0 "/>
-                        <xc:WatermarkTextBox Name="SearchTextBox" Style="{StaticResource SearchTextBox}"
+                <Grid Margin="0, 0, 20, 0" Width="Auto" HorizontalAlignment="Right">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <xc:WatermarkTextBox Grid.Column="1" Name="SearchTextBox" Style="{StaticResource SearchTextBox}"
                                              Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
-                                             Width="200">
-                            <xc:WatermarkTextBox.InputBindings>
-                                <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
-                            </xc:WatermarkTextBox.InputBindings>
-                            <xc:WatermarkTextBox.Watermark>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Search games" FontSize="13" />
-                                </StackPanel>
-                            </xc:WatermarkTextBox.Watermark>
-                        </xc:WatermarkTextBox>
-                    </StackPanel>
-                </Border>
+                                             GotKeyboardFocus="SearchTextBox_OnGotKeyboardFocus"
+                                             LostKeyboardFocus="SearchTextBox_OnLostKeyboardFocus"
+                                             Watermark="Search games" HorizontalAlignment="Right" Width="200">
+                        <xc:WatermarkTextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+                        </xc:WatermarkTextBox.InputBindings>
+                    </xc:WatermarkTextBox>
+                </Grid>
             </Grid>
             <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="#383838" />
 

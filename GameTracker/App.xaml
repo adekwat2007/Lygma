@@ -4,7 +4,9 @@
              xmlns:local="clr-namespace:GameTracker"
              xmlns:vm="clr-namespace:GameTracker.ViewModels"
              xmlns:v="clr-namespace:GameTracker.Views"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
+             xmlns:fa="clr-namespace:FontAwesome5;assembly=FontAwesome5.Net"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime">
     <Application.Resources>
         <SolidColorBrush x:Key="TextColor" Color="#8e919b" />
 
@@ -20,18 +22,37 @@
         <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
             <v:SettingsPage />
         </DataTemplate>
-        <Style x:Key="SearchBorder" TargetType="Border">
+        <!--<Style  x:Key="SearchBorder" TargetType="Border">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="BorderBrush" Value="#8e8e8e" />
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)"
+                                                From="#3e3e3e"
+                                                To="#8e8e8e"
+                                                Duration="0:0:0.1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)"
+                                                From="#8e8e8e"
+                                                To="#3e3e3e"
+                                                Duration="0:0:0.1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
                 </Trigger>
             </Style.Triggers>
             <Setter Property="BorderBrush" Value="#3e3e3e" />
-            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderThickness" Value="2" />
             <Setter Property="CornerRadius" Value="6" />
             <Setter Property="Background" Value="#1c1c1c" />
             <Setter Property="Height" Value="36" />
-        </Style>
+        </Style>-->
         <Style x:Key="CheckBoxBorder" TargetType="Border">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
@@ -66,24 +87,117 @@
             <Setter Property="Width" Value="22" />
             <Setter Property="Height" Value="22" />
         </Style>
-        <Style x:Key="SearchTextBox" TargetType="xctk:WatermarkTextBox">
+        <Style x:Key="WatermarkTextBox" TargetType="xctk:WatermarkTextBox">
             <Style.Triggers>
                 <MultiTrigger>
                     <MultiTrigger.Conditions>
-                        <Condition Property="IsMouseOver" Value="True"/>
-                        <Condition Property="IsKeyboardFocused" Value="False"/>
+                        <Condition Property="IsMouseOver" Value="True" />
+                        <Condition Property="IsKeyboardFocused" Value="False" />
                     </MultiTrigger.Conditions>
-                    <Setter Property="Cursor" Value="Arrow"/>
+                    <Setter Property="Cursor" Value="Arrow" />
                 </MultiTrigger>
             </Style.Triggers>
             <Setter Property="Background" Value="#1c1c1c" />
             <Setter Property="Height" Value="32" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="FontSize" Value="15" />
-            <Setter Property="Margin" Value="3,0,0,0"></Setter>
             <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="KeepWatermarkOnGotFocus" Value="True"/>
-            <Setter Property="Foreground" Value="#cedbe1"/>
+            <Setter Property="KeepWatermarkOnGotFocus" Value="True" />
+            <Setter Property="Foreground" Value="#cedbe1" />
+            <Setter Property="Padding" Value="8, 0, 0, 0"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="xctk:WatermarkTextBox">
+                        <Border x:Name="Border"
+                                BorderBrush="#3e3e3e"
+                                BorderThickness="2"
+                                CornerRadius="6"
+                                Background="#1c1c1c"
+                                Height="Auto">
+
+                            <Grid>
+                                <ScrollViewer Margin="-3, 0, 0, 0"
+                                              x:Name="PART_ContentHost"
+                                              VerticalAlignment="Center"/>
+                                <ContentPresenter x:Name="PART_WatermarkHost"
+                                                  Content="{TemplateBinding Watermark}"
+                                                  ContentTemplate="{TemplateBinding WatermarkTemplate}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  IsHitTestVisible="False"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#8e8e8e" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#8e8e8e" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                <Setter TargetName="PART_WatermarkHost" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="">
+                                <Setter TargetName="PART_WatermarkHost" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter TargetName="PART_WatermarkHost" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SearchTextBox" TargetType="xctk:WatermarkTextBox" BasedOn="{StaticResource WatermarkTextBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="xctk:WatermarkTextBox">
+                        <Border x:Name="Border"
+                                BorderBrush="#3e3e3e"
+                                BorderThickness="2"
+                                CornerRadius="6"
+                                Background="#1c1c1c"
+                                Height="Auto">
+
+                            <Grid>
+                                <fa:ImageAwesome Icon="Solid_Search" Foreground="#c0c1c7" Width="15" Margin="10 0 0 0 "
+                                                 HorizontalAlignment="Left"/>
+                                <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="Left" Margin="25, 0, 0, 0"/>
+                                <ContentPresenter  x:Name="PART_WatermarkHost"
+                                                  ContentTemplate="{TemplateBinding WatermarkTemplate}"
+                                                  Content="{TemplateBinding Watermark}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  IsHitTestVisible="False"
+                                                  Margin="35, 0, 0, 0"
+                                                  Visibility="Collapsed">
+                                </ContentPresenter>
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#8e8e8e" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#8e8e8e" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                <Setter TargetName="PART_WatermarkHost" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="">
+                                <Setter TargetName="PART_WatermarkHost" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter TargetName="PART_WatermarkHost" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Application.Resources>
 </Application>

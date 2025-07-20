@@ -10,12 +10,14 @@ namespace GameTracker.ViewModels
     {
         private CachingProvider _cachingProvider;
 
+        [ObservableProperty] private GameResponse gameResponse;
+
         public string PageName { get; set; } = "Catalogue";
 
-        public ObservableCollection<Game> SearchResults { get; } = new();
         public ObservableCollection<Genre> Genres { get; set; } = new();
         public ObservableCollection<Platform> Platforms { get; set; } = new();
         public ObservableCollection<Developer> Developers { get; set; } = new();
+        public ObservableCollection<Game> Games { get; set; } = new();
 
         public CatalogueViewModel()
         {
@@ -36,6 +38,11 @@ namespace GameTracker.ViewModels
                 Platforms = new ObservableCollection<Platform>(_cachingProvider.Platforms);
             if (_cachingProvider.Developers is not null)
                 Developers = new ObservableCollection<Developer>(_cachingProvider.Developers);
+            if (_cachingProvider.Games is not null)
+            {
+                GameResponse = _cachingProvider.Games;
+                Games = new ObservableCollection<Game>(GameResponse.Results);
+            }
         }
     }
 }

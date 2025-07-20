@@ -20,7 +20,7 @@ namespace GameTracker.ViewModels
         private CachingProvider _cachingProvider;
         private bool _isDataLoaded;
 
-        [ObservableProperty] private IViewModel currentPage;
+        [ObservableProperty] private IViewModel currentPage = new CatalogueViewModel();
 
         [ObservableProperty] private string currentPageName;
         [ObservableProperty] private string searchQuery;
@@ -82,14 +82,6 @@ namespace GameTracker.ViewModels
         {
             NavigateToCatalogue();
             var model = (CatalogueViewModel)CurrentPage;
-
-            model.SearchResults.Clear();
-
-            var results = await _rawgService.SearchGamesAsync(searchQuery);
-            foreach (var game in results)
-            {
-                model.SearchResults.Add(game);
-            }
         }
 
         public async Task LoadData()
@@ -97,6 +89,7 @@ namespace GameTracker.ViewModels
             _cachingProvider.Genres = await _rawgService.GetGenresAsync();
             _cachingProvider.Platforms = await _rawgService.GetPlatformsAsync();
             _cachingProvider.Developers = await _rawgService.GetDevelopersAsync();
+            _cachingProvider.Games = await _rawgService.GetGamesAsync(1);
 
             _isDataLoaded = true;
             NavigateToCatalogueCommand.NotifyCanExecuteChanged();
