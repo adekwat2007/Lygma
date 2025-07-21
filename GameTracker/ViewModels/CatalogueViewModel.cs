@@ -21,6 +21,20 @@ namespace GameTracker.ViewModels
 
         public CatalogueViewModel()
         {
+            Games.Add(new Game()
+            {
+                Background_Image = "https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg",
+                Name = "Grand Theft Auto V",
+                Genres = new List<Genre>()
+                {
+                    new Genre(){Name = "Action"}
+                },
+                Platforms = new List<GamePlatformResponse>()
+                {
+                    new GamePlatformResponse(){Platform = new Platform(){Name = "Pc"}},
+                    new GamePlatformResponse(){Platform = new Platform(){Name = "PlayStation 5"}}
+                }
+            });
         }
 
         public CatalogueViewModel(CachingProvider cachingProvider)
@@ -29,7 +43,7 @@ namespace GameTracker.ViewModels
 
             LoadCache();
         }
-
+        
         private void LoadCache()
         {
             if (_cachingProvider.Genres is not null)

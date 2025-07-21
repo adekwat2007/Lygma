@@ -7,11 +7,12 @@
              xmlns:xc="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:vm="clr-namespace:GameTracker.ViewModels"
              xmlns:fa="clr-namespace:FontAwesome5;assembly=FontAwesome5.Net"
+             xmlns:conv="clr-namespace:GameTracker.Converters"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance vm:CatalogueViewModel, IsDesignTimeCreatable=True}"
              Background="#191919">
     <UserControl.Resources>
-
+        <conv:GenreListToCommaConverter x:Key="StringListToCommaConverter"/>
         <!--all scrollbar background-->
         <Style x:Key="ScrollBarPageButton" TargetType="{x:Type RepeatButton}">
             <Setter Property="Visibility" Value="Visible" />
@@ -158,6 +159,10 @@
 
         <Style x:Key="PageButton" TargetType="RadioButton">
             <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="#dadbe1"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Trigger.EnterActions>
                         <BeginStoryboard>
@@ -189,12 +194,15 @@
                     </Trigger.ExitActions>
                 </Trigger>
             </Style.Triggers>
-            <Setter Property="Width" Value="30" />
-            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="38" />
+            <Setter Property="Height" Value="38" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderBrush" Value="#383838"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="16"></Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
@@ -202,7 +210,8 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="4">
-                            <ContentPresenter />
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -216,8 +225,8 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="320" />
             </Grid.ColumnDefinitions>
-            <!--Genres-->
-            <Border Grid.Column="1" Background="#151515" Margin="14, 20 " BorderThickness="1" BorderBrush="#383838" CornerRadius="6">
+           
+            <Border Grid.Column="1" Background="#151515" Margin="0, 8, 14, 8 " BorderThickness="1" BorderBrush="#383838" CornerRadius="6">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -289,9 +298,9 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <DockPanel Grid.Column="0">
+            <DockPanel Grid.Column="0" >
                 <StackPanel DockPanel.Dock="Top"/>
-                <Grid DockPanel.Dock="Bottom">
+                <Grid DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="16, 8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
@@ -301,27 +310,52 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <RadioButton Grid.Column="0" Style="{StaticResource PageButton}" Content="awdawda" >
-                    </RadioButton>
+                    <RadioButton Grid.Column="0" Style="{StaticResource PageButton}" Content="&lt;" />
+                    <RadioButton Grid.Column="1" Style="{StaticResource PageButton}" Content="1" />
+                    <RadioButton Grid.Column="2" Style="{StaticResource PageButton}" Content="2" />
+                    <RadioButton Grid.Column="3" Style="{StaticResource PageButton}" Content="3" />
+                    <TextBlock Grid.Column="4" Width="38" Height="38" Background="Transparent" 
+                               Text="..." 
+                               FontSize="20"/>
+                    <RadioButton Grid.Column="5" Style="{StaticResource PageButton}" Content="9999" />
+                    <RadioButton Grid.Column="6" Style="{StaticResource PageButton}" Content="&gt;" />
                 </Grid>
                 <ItemsControl ItemsSource="{Binding Games}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid Height="100">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="200"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Source="{Binding Background_Image}" 
-                                       Width="200" Stretch="Fill"/>
-                                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}"/>
-                                <TextBlock Grid.Column="1" Grid.Row="1">
-                                </TextBlock>
-                            </Grid>
+                            <Button>
+                                <Button.Content>
+                                    <Grid Height="100">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Source="{Binding Background_Image}" Stretch="UniformToFill" />
+                                        <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" 
+                                                      Background="#383838" HorizontalAlignment="Center"
+                                                      Width="1" IsEnabled="False"/>
+                                        <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Name}" 
+                                                   Foreground="#f1ffff" Margin="17, 10"/>
+                                        <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Genres, Converter={StaticResource StringListToCommaConverter}}" 
+                                                   Foreground="#707079" Margin="17, 0">
+                                        </TextBlock>
+                                    </Grid>
+                                </Button.Content>
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border BorderBrush="#383838" BorderThickness="1" CornerRadius="0, 6, 6, 0" 
+                                                Background="#151515" Margin="16, 8, 16, 8"
+                                                ClipToBounds="True">
+                                            <ContentPresenter/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

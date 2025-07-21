@@ -21,22 +21,9 @@
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="40" ResizeBorderThickness="5" />
     </WindowChrome.WindowChrome>
-    <Grid Margin="5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="80*" MinWidth="200" MaxWidth="450" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <!--Titlebar-->
-        <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0"
-                     Background="#151515">
-            <TextBlock Text="Hydra" VerticalAlignment="Center" Margin="25,5, 0, 0"
+    <DockPanel Margin="5">
+        <Grid Background="#151515" DockPanel.Dock="Top">
+            <TextBlock Text="Hydra" VerticalAlignment="Center" Margin="25,10, 0, 8"
                        Foreground="#8e919b" DockPanel.Dock="Left" FontWeight="Bold"
                        FontSize="14" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
@@ -78,182 +65,191 @@
                     </Button.Style>
                 </Button>
             </StackPanel>
+            <Border  BorderThickness="0,0,0, 1" BorderBrush="#383838" />
         </Grid>
+        <Grid Background="#1c1c1c" DockPanel.Dock="Bottom" Height="25" >
+            <Border  BorderThickness="0,1,0, 0" BorderBrush="#383838" />
+            <TextBlock></TextBlock>
+        </Grid>
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80*" MinWidth="200" MaxWidth="450" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <!--Separator-->
-        <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" BorderThickness="0,0,0, 1" BorderBrush="#383838" />
-
-        <!--Side menu-->
-        <StackPanel Name="SideMenu" Grid.Column="0"  Grid.Row="2" Orientation="Vertical" Background="#151515" Grid.ColumnSpan="2">
-            <StackPanel.Resources>
-                <Style TargetType="RadioButton">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Trigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" 
+            <!--Side menu-->
+            <StackPanel Name="SideMenu" Grid.Column="0" Orientation="Vertical" Background="#151515" Grid.ColumnSpan="2">
+                <StackPanel.Resources>
+                    <Style TargetType="RadioButton">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" 
                                                         From="#151515"
                                                         To="#434242"
                                                         Duration="0:0:0.1"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
-                            <Trigger.ExitActions>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
 
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" 
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" 
                                                         From="#434242"
                                                         To="#151515"
                                                         Duration="0:0:0.1"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.ExitActions>
-                        </Trigger>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Background" Value="#383838" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value="0.5"></Setter>
-                        </Trigger>
-                    </Style.Triggers>
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="Padding" Value="4" />
-                    <Setter Property="BorderThickness" Value="0" />
-                    <Setter Property="HorizontalAlignment" Value="Stretch" />
-                    <Setter Property="HorizontalContentAlignment" Value="Left" />
-                    <Setter Property="FontWeight" Value="Normal" />
-                    <Setter Property="FontSize" Value="16" />
-                    <Setter Property="Cursor" Value="Hand" />
-                    <Setter Property="Height" Value="33" />
-                    <Setter Property="Margin" Value="15, 4" />
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="RadioButton">
-                                <Border Background="{TemplateBinding Background}" CornerRadius="4"
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" Value="#383838" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Padding" Value="4" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="FontWeight" Value="Normal" />
+                        <Setter Property="FontSize" Value="16" />
+                        <Setter Property="Cursor" Value="Hand" />
+                        <Setter Property="Height" Value="33" />
+                        <Setter Property="Margin" Value="15, 4" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="4"
                                         Padding="10, 0">
-                                    <ContentPresenter />
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-                <Style TargetType="Border">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#383838" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="14" />
-                    <Setter Property="VerticalAlignment" Value="Center" />
-                    <Setter Property="Foreground" Value="#c0c1c7" />
-                </Style>
-            </StackPanel.Resources>
-            <RadioButton Name="SignInButton" Height="45" Margin="15, 17, 15, 26">
-                <RadioButton.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <Border BorderThickness="1" BorderBrush="#3e3e3e" Width="33" Height="33"
+                                        <ContentPresenter />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#383838" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="14" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="Foreground" Value="#c0c1c7" />
+                    </Style>
+                </StackPanel.Resources>
+                <RadioButton Name="SignInButton" Height="45" Margin="15, 17, 15, 26">
+                    <RadioButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Border BorderThickness="1" BorderBrush="#3e3e3e" Width="33" Height="33"
                                 CornerRadius="4"
                                 Background="#1c1c1c">
-                            <fa:ImageAwesome Icon="Regular_User" Foreground="#c0c1c7" Width="19" />
-                        </Border>
-                        <TextBlock Text="Sign in" FontWeight="Bold" FontSize="16" Margin="12, 0, 0, 0" />
-                    </StackPanel>
-                </RadioButton.Content>
-            </RadioButton>
-            <RadioButton Name="HomeMenuButton" Command="{Binding NavigateToHomeCommand}"
+                                <fa:ImageAwesome Icon="Regular_User" Foreground="#c0c1c7" Width="19" />
+                            </Border>
+                            <TextBlock Text="Sign in" FontWeight="Bold" FontSize="16" Margin="12, 0, 0, 0" />
+                        </StackPanel>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton Name="HomeMenuButton" Command="{Binding NavigateToHomeCommand}"
                          IsChecked="{Binding HomeSelected}">
-                <RadioButton.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Solid_Home" Width="18" Foreground="#c0c1c7" />
-                        <TextBlock Text="Home" Margin="12, 0, 0, 0" />
-                    </StackPanel>
-                </RadioButton.Content>
-            </RadioButton>
-            <RadioButton Name="CatalogueMenuButton" Command="{Binding NavigateToCatalogueCommand}"
+                    <RadioButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="Solid_Home" Width="18" Foreground="#c0c1c7" />
+                            <TextBlock Text="Home" Margin="12, 0, 0, 0" />
+                        </StackPanel>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton Name="CatalogueMenuButton" Command="{Binding NavigateToCatalogueCommand}"
                          IsChecked="{Binding CatalogueSelected}">
-                <RadioButton.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Solid_Gamepad" Width="18" Foreground="#c0c1c7" />
-                        <TextBlock Text="Catalogue" Margin="12, 0, 0, 0" />
-                    </StackPanel>
-                </RadioButton.Content>
-            </RadioButton>
-            <RadioButton Name="DownloadsMenuButton" Command="{Binding NavigateToDownloadsCommand}"
+                    <RadioButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="Solid_Gamepad" Width="18" Foreground="#c0c1c7" />
+                            <TextBlock Text="Catalogue" Margin="12, 0, 0, 0" />
+                        </StackPanel>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton Name="DownloadsMenuButton" Command="{Binding NavigateToDownloadsCommand}"
                          IsChecked="{Binding DownloadsSelected}">
-                <RadioButton.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Solid_Download" Width="16" Foreground="#c0c1c7" />
-                        <TextBlock Text="Downloads"  Margin="14, 0, 0, 0" />
-                    </StackPanel>
-                </RadioButton.Content>
-            </RadioButton>
-            <RadioButton Name="SettingsMenuButton" Command="{Binding NavigateToSettingsCommand}"
+                    <RadioButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="Solid_Download" Width="16" Foreground="#c0c1c7" />
+                            <TextBlock Text="Downloads"  Margin="14, 0, 0, 0" />
+                        </StackPanel>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton Name="SettingsMenuButton" Command="{Binding NavigateToSettingsCommand}"
                          IsChecked="{Binding SettingsSelected}">
-                <RadioButton.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <fa:ImageAwesome Icon="Solid_Cog" Width="16" Foreground="#c0c1c7" />
-                        <TextBlock Text="Settings" Margin="14, 0, 0, 0" />
-                    </StackPanel>
-                </RadioButton.Content>
-            </RadioButton>
+                    <RadioButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="Solid_Cog" Width="16" Foreground="#c0c1c7" />
+                            <TextBlock Text="Settings" Margin="14, 0, 0, 0" />
+                        </StackPanel>
+                    </RadioButton.Content>
+                </RadioButton>
 
-            <TextBlock Text="MY LIBRARY" FontSize="13" FontWeight="Bold" Margin="15, 22, 0, 18" />
+                <TextBlock Text="MY LIBRARY" FontSize="13" FontWeight="Bold" Margin="15, 22, 0, 18" />
 
-            <xc:WatermarkTextBox Style="{DynamicResource WatermarkTextBox}" Watermark="Filter library" 
+                <xc:WatermarkTextBox Style="{DynamicResource WatermarkTextBox}" Watermark="Filter library" 
                                  Margin="20, 0"/>
-        </StackPanel>
+            </StackPanel>
 
-        <!--Vertical splitter-->
-        <GridSplitter Grid.Column="1"  Grid.Row="2" Width="1" HorizontalAlignment="Center" Background="#383838"
+            <!--Vertical splitter-->
+            <GridSplitter Grid.Column="1"  Width="1" HorizontalAlignment="Center" Background="#383838"
                       DragStarted="MenuSplitter_OnDragStarted" DragCompleted="MenuSplitter_OnDragCompleted">
-            <GridSplitter.Style>
-                <Style TargetType="GridSplitter">
-                    <Style.Triggers>
-                        <Trigger Property="IsDragging" Value="True">
-                            <Setter Property="Cursor" Value="Arrow" />
-                        </Trigger>
-                        <Trigger Property="IsDragging" Value="False">
-                            <Setter Property="Cursor" Value="SizeWE" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </GridSplitter.Style>
-        </GridSplitter>
+                <GridSplitter.Style>
+                    <Style TargetType="GridSplitter">
+                        <Style.Triggers>
+                            <Trigger Property="IsDragging" Value="True">
+                                <Setter Property="Cursor" Value="Arrow" />
+                            </Trigger>
+                            <Trigger Property="IsDragging" Value="False">
+                                <Setter Property="Cursor" Value="SizeWE" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </GridSplitter.Style>
+            </GridSplitter>
 
-        <!--Main header-->
-        <Grid Grid.Column="2" Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.077*" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" HorizontalAlignment="Stretch" Background="#151515">
-                <TextBlock Text="{Binding CurrentPageName}" Foreground="#c0c1c7" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"
+            <!--Main header-->
+            <Grid Grid.Column="2"  >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.077*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" HorizontalAlignment="Stretch" Background="#151515">
+                    <TextBlock Text="{Binding CurrentPageName}" Foreground="#c0c1c7" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0"
                    FontSize="19" FontWeight="DemiBold" />
-                <Grid Margin="0, 0, 20, 0" Width="Auto" HorizontalAlignment="Right">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <xc:WatermarkTextBox Grid.Column="1" Name="SearchTextBox" Style="{StaticResource SearchTextBox}"
+                    <Grid Margin="0, 0, 20, 0" Width="Auto" HorizontalAlignment="Right">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <xc:WatermarkTextBox Grid.Column="1" Name="SearchTextBox" Style="{StaticResource SearchTextBox}"
                                              Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
                                              GotKeyboardFocus="SearchTextBox_OnGotKeyboardFocus"
                                              LostKeyboardFocus="SearchTextBox_OnLostKeyboardFocus"
                                              Watermark="Search games" HorizontalAlignment="Right" Width="200">
-                        <xc:WatermarkTextBox.InputBindings>
-                            <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
-                        </xc:WatermarkTextBox.InputBindings>
-                    </xc:WatermarkTextBox>
+                            <xc:WatermarkTextBox.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+                            </xc:WatermarkTextBox.InputBindings>
+                        </xc:WatermarkTextBox>
+                    </Grid>
                 </Grid>
-            </Grid>
-            <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="#383838" />
+                <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="#383838" />
 
-            <!--Page-->
-            <ContentControl Grid.Row="2" Content="{Binding CurrentPage}" />
+                <!--Page-->
+                <ContentControl Grid.Row="2" Content="{Binding CurrentPage}" Margin="0, 24, 0, 0"/>
+            </Grid>
         </Grid>
-    </Grid>
+    </DockPanel>
 </Window>
