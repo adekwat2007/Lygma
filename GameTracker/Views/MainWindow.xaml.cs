@@ -68,12 +68,6 @@ namespace GameTracker.Views
             AnimateWidth(SearchTextBox, 200, 200);
         #endregion
 
-        private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is MainWindowViewModel vm)
-                await vm.LoadData();
-        }
-
         private void MainWindow_OnMouseDown(object sender, MouseButtonEventArgs e) => Keyboard.ClearFocus();
     }
 }

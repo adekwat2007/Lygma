@@ -15,15 +15,12 @@ namespace GameTracker.ViewModels
     {
         public string PageName { get; set; } = "Main page";
 
-        private RawgApiService _rawgService;
         private IViewModelFactory _viewModelFactory;
-        private CachingProvider _cachingProvider;
         private bool _isDataLoaded;
 
         [ObservableProperty] private IViewModel currentPage = new CatalogueViewModel();
 
         [ObservableProperty] private string currentPageName;
-        [ObservableProperty] private string searchQuery;
 
         [ObservableProperty] private bool homeSelected;
         [ObservableProperty] private bool catalogueSelected;
@@ -36,11 +33,9 @@ namespace GameTracker.ViewModels
         {
         }
 
-        public MainWindowViewModel(RawgApiService rawgService, IViewModelFactory viewModelFactory, CachingProvider cachingProvider)
+        public MainWindowViewModel(IViewModelFactory viewModelFactory)
         {
-            _rawgService = rawgService;
             _viewModelFactory = viewModelFactory;
-            _cachingProvider = cachingProvider;
         }
 
         private bool IsDataLoaded() => _isDataLoaded;
@@ -53,12 +48,14 @@ namespace GameTracker.ViewModels
             HomeSelected = true;
         }
 
-        [RelayCommand(CanExecute = nameof(IsDataLoaded))]
-        private void NavigateToCatalogue()
+        [RelayCommand]
+        private async Task NavigateToCatalogue()
         {
             CurrentPage = _viewModelFactory.CreateViewModel(ViewType.Catalogue);
             CurrentPageName = ((CatalogueViewModel)CurrentPage).PageName;
             CatalogueSelected = true;
+
+            await ((CatalogueViewModel)CurrentPage).LoadData();
         }
 
         [RelayCommand]
@@ -82,17 +79,6 @@ namespace GameTracker.ViewModels
         {
             NavigateToCatalogue();
             var model = (CatalogueViewModel)CurrentPage;
-        }
-
-        public async Task LoadData()
-        {
-            _cachingProvider.Genres = await _rawgService.GetGenresAsync();
-            _cachingProvider.Platforms = await _rawgService.GetPlatformsAsync();
-            _cachingProvider.Developers = await _rawgService.GetDevelopersAsync();
-            _cachingProvider.Games = await _rawgService.GetGamesAsync(1);
-
-            _isDataLoaded = true;
-            NavigateToCatalogueCommand.NotifyCanExecuteChanged();
         }
     }
 }

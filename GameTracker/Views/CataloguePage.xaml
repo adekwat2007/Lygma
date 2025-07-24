@@ -3,16 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:GameTracker.Views"
+             xmlns:local="clr-namespace:GameTracker"
              xmlns:xc="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:vm="clr-namespace:GameTracker.ViewModels"
              xmlns:fa="clr-namespace:FontAwesome5;assembly=FontAwesome5.Net"
+             xmlns:ext="clr-namespace:GameTracker.Extensions"
              xmlns:conv="clr-namespace:GameTracker.Converters"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance vm:CatalogueViewModel, IsDesignTimeCreatable=True}"
              Background="#191919">
+
     <UserControl.Resources>
-        <conv:GenreListToCommaConverter x:Key="StringListToCommaConverter"/>
+        <conv:GenreListToCommaConverter x:Key="StringListToCommaConverter" />
         <!--all scrollbar background-->
         <Style x:Key="ScrollBarPageButton" TargetType="{x:Type RepeatButton}">
             <Setter Property="Visibility" Value="Visible" />
@@ -160,21 +162,21 @@
         <Style x:Key="PageButton" TargetType="RadioButton">
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Background" Value="#dadbe1"/>
-                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="Background" Value="#dadbe1" />
+                    <Setter Property="Foreground" Value="Black" />
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
                                 <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
-                                                                    From="#151515" 
+                                                                    From="#151515"
                                                                     To="#2d2d2d"
-                                                                    Duration="0:0:0.1"/>
+                                                                    Duration="0:0:0.1" />
                                 <ColorAnimation Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)"
-                                                                    From="#383838" 
+                                                                    From="#383838"
                                                                     To="#4c4c4c"
-                                                                    Duration="0:0:0.1"/>
+                                                                    Duration="0:0:0.1" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
@@ -183,12 +185,12 @@
                             <Storyboard>
                                 <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
                                                                     From="#2d2d2d"
-                                                                    To="#151515" 
-                                                                    Duration="0:0:0.1"/>
+                                                                    To="#151515"
+                                                                    Duration="0:0:0.1" />
                                 <ColorAnimation Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)"
-                                                                    From="#383838" 
+                                                                    From="#383838"
                                                                     To="#4c4c4c"
-                                                                    Duration="0:0:0.1"/>
+                                                                    Duration="0:0:0.1" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.ExitActions>
@@ -197,11 +199,11 @@
             <Setter Property="Width" Value="38" />
             <Setter Property="Height" Value="38" />
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderBrush" Value="#383838"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="#383838" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="{StaticResource TextColor}" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="FontSize" Value="16"></Setter>
             <Setter Property="Template">
                 <Setter.Value>
@@ -211,7 +213,7 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="4">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -219,13 +221,12 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer>
+    <ScrollViewer x:Name="MainScroll" >
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="320" />
             </Grid.ColumnDefinitions>
-           
             <Border Grid.Column="1" Background="#151515" Margin="0, 8, 14, 8 " BorderThickness="1" BorderBrush="#383838" CornerRadius="6">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -298,8 +299,8 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <DockPanel Grid.Column="0" >
-                <StackPanel DockPanel.Dock="Top"/>
+            <DockPanel Grid.Column="0">
+                <StackPanel DockPanel.Dock="Top" />
                 <Grid DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="16, 8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -311,12 +312,15 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <RadioButton Grid.Column="0" Style="{StaticResource PageButton}" Content="&lt;" />
-                    <RadioButton Grid.Column="1" Style="{StaticResource PageButton}" Content="1" />
-                    <RadioButton Grid.Column="2" Style="{StaticResource PageButton}" Content="2" />
-                    <RadioButton Grid.Column="3" Style="{StaticResource PageButton}" Content="3" />
-                    <TextBlock Grid.Column="4" Width="38" Height="38" Background="Transparent" 
-                               Text="..." 
-                               FontSize="20"/>
+                    <RadioButton Grid.Column="1" Style="{StaticResource PageButton}" Content="{Binding Pages[0]}" 
+                         Command="{Binding ChangeGamePageCommand}" CommandParameter="{Binding Pages[0]}"/>
+                    <RadioButton Grid.Column="2" Style="{StaticResource PageButton}" Content="{Binding Pages[1]}" 
+                         Command="{Binding ChangeGamePageCommand}" CommandParameter="{Binding Pages[1]}"/>
+                    <RadioButton Grid.Column="3" Style="{StaticResource PageButton}" Content="{Binding Pages[2]}" 
+                         Command="{Binding ChangeGamePageCommand}" CommandParameter="{Binding Pages[2]}"/>
+                    <TextBlock Grid.Column="4" Width="38" Height="38" Background="Transparent"
+                       Text="..."
+                       FontSize="20" />
                     <RadioButton Grid.Column="5" Style="{StaticResource PageButton}" Content="9999" />
                     <RadioButton Grid.Column="6" Style="{StaticResource PageButton}" Content="&gt;" />
                 </Grid>
@@ -324,34 +328,56 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Button>
-                                <Button.Content>
-                                    <Grid Height="100">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="200"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Source="{Binding Background_Image}" Stretch="UniformToFill" />
-                                        <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" 
-                                                      Background="#383838" HorizontalAlignment="Center"
-                                                      Width="1" IsEnabled="False"/>
-                                        <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Name}" 
-                                                   Foreground="#f1ffff" Margin="17, 10"/>
-                                        <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Genres, Converter={StaticResource StringListToCommaConverter}}" 
-                                                   Foreground="#707079" Margin="17, 0">
-                                        </TextBlock>
-                                    </Grid>
-                                </Button.Content>
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
-                                        <Border BorderBrush="#383838" BorderThickness="1" CornerRadius="0, 6, 6, 0" 
-                                                Background="#151515" Margin="16, 8, 16, 8"
-                                                ClipToBounds="True">
-                                            <ContentPresenter/>
+                                        <ControlTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding DataContext.GamesLoaded, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="False">
+                                                <Setter Property="Content">
+                                                    <Setter.Value>
+                                                        <Grid Height="100" x:Name="GamesGrid" Loaded="GamesGrid_OnLoaded">
+                                                            <Grid.Resources>
+                                                                <GradientStop x:Key="GameLoadingStop" Color="#2c2c2c" Offset="0.5" />
+                                                                <LinearGradientBrush x:Key="LoadingBrush" StartPoint="0,0" EndPoint="1, 9">
+                                                                    <GradientStop Color="#1e1e1e" Offset="0" />
+                                                                    <StaticResource ResourceKey="GameLoadingStop" />
+                                                                    <GradientStop Color="#1e1e1e" Offset="1" />
+                                                                </LinearGradientBrush>
+                                                            </Grid.Resources>
+                                                            <Rectangle Fill="{StaticResource LoadingBrush}"/>
+                                                        </Grid>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding DataContext.GamesLoaded, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                                <Setter Property="Content">
+                                                    <Setter.Value>
+                                                        <Grid Height="100">
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="*" />
+                                                            </Grid.RowDefinitions>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="200" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Source="{Binding Background_Image}" Stretch="UniformToFill" />
+                                                            <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
+                                                                  Background="#383838" HorizontalAlignment="Center"
+                                                                  Width="1" IsEnabled="False" />
+                                                            <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Name}"
+                                                               Foreground="#f1ffff" Margin="17, 10" />
+                                                            <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Genres, Converter={StaticResource StringListToCommaConverter}}"
+                                                               Foreground="#707079" Margin="17, 0" />
+                                                        </Grid>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
+                                        <Border BorderBrush="#383838" BorderThickness="1"
+                                        Background="#151515" Margin="16, 8, 16, 0"
+                                        ClipToBounds="True">
+                                            <ContentPresenter />
                                         </Border>
                                     </ControlTemplate>
                                 </Button.Template>
