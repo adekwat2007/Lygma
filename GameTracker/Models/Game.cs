@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using System.Windows.Media.Imaging;
 
 namespace GameTracker.Models
 {
@@ -29,6 +30,12 @@ namespace GameTracker.Models
         public string Previous { get; set; }
 
         [JsonPropertyName("count")]
+        public int Count { get; set; }
+    }
+
+    internal class GameCountResponse
+    {
+        [JsonPropertyName("Count")]
         public int Count { get; set; }
     }
 

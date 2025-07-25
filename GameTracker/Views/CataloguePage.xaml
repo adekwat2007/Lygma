@@ -9,12 +9,15 @@
              xmlns:fa="clr-namespace:FontAwesome5;assembly=FontAwesome5.Net"
              xmlns:ext="clr-namespace:GameTracker.Extensions"
              xmlns:conv="clr-namespace:GameTracker.Converters"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance vm:CatalogueViewModel, IsDesignTimeCreatable=True}"
              Background="#191919">
 
     <UserControl.Resources>
         <conv:GenreListToCommaConverter x:Key="StringListToCommaConverter" />
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <conv:MathConverter x:Key="MathConverter"/>
         <!--all scrollbar background-->
         <Style x:Key="ScrollBarPageButton" TargetType="{x:Type RepeatButton}">
             <Setter Property="Visibility" Value="Visible" />
@@ -84,6 +87,40 @@
         <Style x:Key="FilterScrollViewer" TargetType="{x:Type ScrollViewer}">
             <Setter Property="Margin" Value="0, 16, 0, 0" />
             <Setter Property="Height" Value="310" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ScrollContentPresenter Grid.Column="0" />
+                            <ScrollBar
+                            x:Name="PART_VerticalScrollBar"
+                            Grid.Column="1"
+                            Opacity="0"
+                            Style="{StaticResource FilterScrollBar}"
+                            Value="{TemplateBinding VerticalOffset}"
+                            Maximum="{TemplateBinding ScrollableHeight}"
+                            ViewportSize="{TemplateBinding ViewportHeight}"
+                            Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PART_VerticalScrollBar" Property="Opacity" Value="1" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!--main scroll viewer-->
+        <Style x:Key="MainScrollViewer" TargetType="{x:Type ScrollViewer}">
+            <Setter Property="Margin" Value="0, 16, 0, 0" />
+            <Setter Property="Height" Value="Auto" />
             <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -204,7 +241,8 @@
             <Setter Property="Foreground" Value="{StaticResource TextColor}" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
-            <Setter Property="FontSize" Value="16"></Setter>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="0, 0, 4, 0"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
@@ -221,7 +259,7 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer x:Name="MainScroll" >
+    <ScrollViewer Style="{StaticResource MainScrollViewer}" >
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -310,19 +348,42 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <RadioButton Grid.Column="0" Style="{StaticResource PageButton}" Content="&lt;" />
-                    <RadioButton Grid.Column="1" Style="{StaticResource PageButton}" Content="{Binding Pages[0]}" 
+                    <RadioButton Grid.Column="0" Style="{StaticResource PageButton}" Content="&lt;" 
+                                 Command="{Binding ChangeGamePageCommand}" 
+                                 CommandParameter="{Binding CurrentPage, Converter={StaticResource MathConverter}, ConverterParameter=@VALUE-1}"/>
+                    <RadioButton Grid.Column="1" Style="{StaticResource PageButton}" Content="1" 
+                         Command="{Binding ChangeGamePageCommand}"
+                         Visibility="{Binding IsFirstPageButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <RadioButton.CommandParameter>
+                            <sys:Int32>1</sys:Int32>
+                        </RadioButton.CommandParameter>
+                    </RadioButton>
+                    <TextBlock Grid.Column="2" Width="38" Height="38" Background="Transparent"
+                               Text="..."
+                               FontSize="20"
+                               TextAlignment="Center" Margin="0, 0, 4, 0"
+                               Visibility="{Binding IsFirstPageButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                    <RadioButton Grid.Column="3" Style="{StaticResource PageButton}" Content="{Binding Pages[0]}" 
                          Command="{Binding ChangeGamePageCommand}" CommandParameter="{Binding Pages[0]}"/>
-                    <RadioButton Grid.Column="2" Style="{StaticResource PageButton}" Content="{Binding Pages[1]}" 
+                    <RadioButton Grid.Column="4" Style="{StaticResource PageButton}" Content="{Binding Pages[1]}" 
                          Command="{Binding ChangeGamePageCommand}" CommandParameter="{Binding Pages[1]}"/>
-                    <RadioButton Grid.Column="3" Style="{StaticResource PageButton}" Content="{Binding Pages[2]}" 
+                    <RadioButton Grid.Column="5" Style="{StaticResource PageButton}" Content="{Binding Pages[2]}" 
                          Command="{Binding ChangeGamePageCommand}" CommandParameter="{Binding Pages[2]}"/>
-                    <TextBlock Grid.Column="4" Width="38" Height="38" Background="Transparent"
+
+                    <TextBlock Grid.Column="6" Width="38" Height="38" Background="Transparent"
                        Text="..."
-                       FontSize="20" />
-                    <RadioButton Grid.Column="5" Style="{StaticResource PageButton}" Content="9999" />
-                    <RadioButton Grid.Column="6" Style="{StaticResource PageButton}" Content="&gt;" />
+                       FontSize="20" 
+                       TextAlignment="Center" Margin="0, 0, 4, 0"/>
+                    <RadioButton Grid.Column="7" Style="{StaticResource PageButton}" Content="{Binding MaxPage}"
+                                 Command="{Binding ChangeGamePageCommand}"
+                                 CommandParameter="{Binding MaxPage}"/>
+                    <RadioButton Grid.Column="8" Style="{StaticResource PageButton}" Content="&gt;" 
+                                 Command="{Binding ChangeGamePageCommand}" 
+                                 CommandParameter="{Binding CurrentPage, Converter={StaticResource MathConverter}, ConverterParameter=@VALUE+1}"/>
                 </Grid>
                 <ItemsControl ItemsSource="{Binding Games}">
                     <ItemsControl.ItemTemplate>
@@ -361,7 +422,7 @@
                                                                 <ColumnDefinition Width="Auto" />
                                                                 <ColumnDefinition Width="*" />
                                                             </Grid.ColumnDefinitions>
-                                                            <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Source="{Binding Background_Image}" Stretch="UniformToFill" />
+                                                            <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Source="{Binding BackgroundBitmapImage}" Stretch="UniformToFill"/>
                                                             <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
                                                                   Background="#383838" HorizontalAlignment="Center"
                                                                   Width="1" IsEnabled="False" />

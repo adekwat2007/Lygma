@@ -1,9 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using GameTracker.Models;
 using GameTracker.Services;
 using GameTracker.ViewModels.Interfaces;
 using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.Input;
+using System.Windows.Media.Imaging;
 
 namespace GameTracker.ViewModels
 {
@@ -11,6 +12,7 @@ namespace GameTracker.ViewModels
     {
         private RawgApiService _rawgApiService;
         private CachingProvider _cachingProvider;
+        public string PageName { get; set; } = "Catalogue";
 
         [ObservableProperty] private GameResponse gameResponse;
 
@@ -18,16 +20,17 @@ namespace GameTracker.ViewModels
         [ObservableProperty] private bool platformsLoaded;
         [ObservableProperty] private bool developersLoaded;
         [ObservableProperty] private bool gamesLoaded;
+        [ObservableProperty] private bool isFirstPageButtonVisible;
 
         [ObservableProperty] private int currentPage = 1;
-        public ObservableCollection<int> Pages { get; set; } = new() { 1, 2, 3 };
-
-        public string PageName { get; set; } = "Catalogue";
+        [ObservableProperty] private int maxPage;
+        [ObservableProperty] private int gamesCount;
 
         public ObservableCollection<Genre> Genres { get; set; } = new();
         public ObservableCollection<Platform> Platforms { get; set; } = new();
         public ObservableCollection<Developer> Developers { get; set; } = new();
         public ObservableCollection<Game> Games { get; set; } = new(new Game[20]);
+        public ObservableCollection<int> Pages { get; set; } = new() { 1, 2, 3 };
 
         public CatalogueViewModel()
         {
@@ -51,6 +54,13 @@ namespace GameTracker.ViewModels
         {
             _rawgApiService = rawgApiService;
             _cachingProvider = cachingProvider;
+        }
+
+        public async Task GetMaxPage()
+        {
+            var response = await _rawgApiService.GetGamesCountAsync();
+            GamesCount = response.Count;
+            MaxPage = GamesCount % 20 == 0 ? GamesCount / 20 : GamesCount / 20 + 1;
         }
 
         public async Task LoadData()
@@ -127,10 +137,12 @@ namespace GameTracker.ViewModels
 
                 if (_cachingProvider.Games is null)
                 {
-                    var games = await _rawgApiService.GetGamesAsync(1);
+                    var games = await _rawgApiService.GetGamesPageAsync(1);
                     _cachingProvider.Games = games;
                     foreach (var game in games.Results)
+                    {
                         Games.Add(game);
+                    }
                 }
                 else
                 {
@@ -146,17 +158,36 @@ namespace GameTracker.ViewModels
 
         private async Task LoadGamePage(int page)
         {
+            GamesLoaded = false;
             Games.Clear();
 
-            var games = await _rawgApiService.GetGamesAsync(page);
+            var games = await _rawgApiService.GetGamesPageAsync(page);
             _cachingProvider.Games = games;
             foreach (var game in games.Results)
                 Games.Add(game);
+
+            GamesLoaded = true;
         }
 
         [RelayCommand]
         private async Task ChangeGamePage(int page)
         {
+            if (page == Pages[2])
+            {
+                Pages[0]++;
+                Pages[1]++;
+                Pages[2]++;
+            }
+            if (CurrentPage > 2 && page == Pages[0])
+            {
+                Pages[0] = page - 1;
+                Pages[1] = page;
+                Pages[2] = page + 1;
+            }
+
+            IsFirstPageButtonVisible = page > 2;
+
+
             CurrentPage = page;
 
             await LoadGamePage(page);

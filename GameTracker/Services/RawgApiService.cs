@@ -15,7 +15,16 @@ namespace GameTracker.Services
             _httpClient = httpClient;
         }
 
-        public async Task<GameResponse> GetGamesAsync(int page, int pageSize = 20)
+        public async Task<GameCountResponse> GetGamesCountAsync()
+        {
+            var url = $"{_baseUrl}games?key={_apiKey}";
+            var json = await _httpClient.GetStringAsync(url);
+            var response = JsonConvert.DeserializeObject<GameCountResponse>(json);
+
+            return response ?? new();
+        }
+
+        public async Task<GameResponse> GetGamesPageAsync(int page, int pageSize = 20)
         {
             var url = $"{_baseUrl}games?key={_apiKey}&page={page}&page_size={pageSize}";
             var json = await _httpClient.GetStringAsync(url);

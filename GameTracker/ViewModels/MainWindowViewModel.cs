@@ -38,8 +38,6 @@ namespace GameTracker.ViewModels
             _viewModelFactory = viewModelFactory;
         }
 
-        private bool IsDataLoaded() => _isDataLoaded;
-
         [RelayCommand]
         private void NavigateToHome()
         {
@@ -56,6 +54,7 @@ namespace GameTracker.ViewModels
             CatalogueSelected = true;
 
             await ((CatalogueViewModel)CurrentPage).LoadData();
+            await ((CatalogueViewModel)CurrentPage).GetMaxPage();
         }
 
         [RelayCommand]
