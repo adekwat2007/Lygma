@@ -22,7 +22,7 @@
     </WindowChrome.WindowChrome>
     <DockPanel Margin="5">
         <Grid Background="#151515" DockPanel.Dock="Top">
-            <TextBlock Text="Hydra" VerticalAlignment="Center" Margin="25,10, 0, 8"
+            <TextBlock Text="Lygma" VerticalAlignment="Center" Margin="25,10, 0, 8"
                        Foreground="#8e919b" DockPanel.Dock="Left" FontWeight="Bold"
                        FontSize="14" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
